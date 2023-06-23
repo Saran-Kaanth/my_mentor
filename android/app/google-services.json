@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "418264740257",
+    "project_id": "mentorapplication-a5e17",
+    "storage_bucket": "mentorapplication-a5e17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418264740257:android:999d96200a895eff325be0",
+        "android_client_info": {
+          "package_name": "com.eskay.my_mentor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418264740257-2ji0lk2gnq9lj9td8fasram4hb50d7e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRW7YYy5aIBtxo-60PBufaPqYOmyIe76A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418264740257-2ji0lk2gnq9lj9td8fasram4hb50d7e2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
