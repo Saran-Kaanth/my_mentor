@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:my_mentor/screens/home_screen.dart';
 // import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 
 class AuthRepository {
@@ -8,8 +9,10 @@ class AuthRepository {
       {required String email, required String password}) async {
     print("repo in");
     try {
-      _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      
+      // HomeScreen();
       // _firebaseAuth.signInWithEmailAndPassword(email: , password: password)
       // print(_firebaseAuth.currentUser!.email);
     } on FirebaseAuthException catch (e) {

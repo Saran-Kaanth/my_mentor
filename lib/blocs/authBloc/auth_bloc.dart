@@ -27,7 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignUpEmailPasswordEvent>((event, emit) async {
       try {
         emit(AuthLoadingState());
-        _firebaseAuth.createUserWithEmailAndPassword(
+        await _firebaseAuth.createUserWithEmailAndPassword(
             email: event.email, password: event.password);
         emit(AuthLoggedInState());
       } on FirebaseAuthException catch (e) {

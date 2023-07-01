@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
+  HomeScreen();
   final User user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,14 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  TextEditingController? _usernameController = TextEditingController();
+  TextEditingController? _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -108,6 +114,7 @@ class LoginScreen extends StatelessWidget {
                       child: TextField(
                         // textAlign: TextAlign.center,
                         // textAlignVertical: TextAlignVertical.top,
+                        controller: _usernameController,
                         style: TextStyle(color: Colors.amber),
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.account_circle_rounded),
@@ -131,6 +138,7 @@ class LoginScreen extends StatelessWidget {
                       child: TextField(
                         // textAlign: TextAlign.center,
                         // textAlignVertical: TextAlignVertical.top,
+                        controller: _passwordController,
                         style: TextStyle(color: Colors.amber),
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.key_rounded),
@@ -206,7 +214,16 @@ class LoginScreen extends StatelessWidget {
                                   Colors.deepOrangeAccent.withOpacity(1),
                               // splashColor: Colors.deepOrangeAccent.shade700,
                               splashColor: Colors.deepOrangeAccent,
-                              onTap: () {},
+                              onTap: () {
+                                print(_usernameController!.text.toString());
+                                
+                                _firebaseAuth
+                                    .signInWithEmailAndPassword(
+                                        email: _usernameController!.text,
+                                        password: _passwordController!.text)
+                                    .then((value) =>
+                                        Navigator.pushNamed(context, "home"));
+                              },
                               // customBorder: Border.all(color: Colors.amber),
                               borderRadius: BorderRadius.circular(10),
                               child: Container(
