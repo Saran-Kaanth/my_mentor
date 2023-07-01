@@ -7,11 +7,6 @@ class HomeScreen extends StatelessWidget {
   final User user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-    // FirebaseAuth userInstance = FirebaseAuth.instance;
-    // User? user = userInstance.currentUser;
-    // User? _currentUser = getCurrentUser();
-    // String? userEmail = user.email;
-    // print(userEmail);
     return Scaffold(
       body: SafeArea(
         child: Center(

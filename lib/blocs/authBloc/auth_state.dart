@@ -15,6 +15,8 @@ class AuthErrorState extends AuthState {
   AuthErrorState(this.errorMessage);
 }
 
+// ------------------------------------------------------
+
 class AuthDataFailedState extends AuthState {
   String? message;
   AuthDataFailedState({this.message});
