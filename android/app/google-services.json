@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "418264740257-2ji0lk2gnq9lj9td8fasram4hb50d7e2.apps.googleusercontent.com",
+          "client_id": "418264740257-6949ndduutbem08g4cvik6becinr8n0l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eskay.my_mentor",
+            "certificate_hash": "d09ab2ef784545c4062d8273de9ea327acc444a7"
+          }
+        },
+        {
+          "client_id": "418264740257-vfn7t039rqnovnfvu05i3jrdcefe8p52.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

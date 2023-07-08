@@ -1,17 +1,20 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  TextEditingController? _usernameController = TextEditingController();
-  TextEditingController? _passwordController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final bloc = BlocProvider.of<AuthBloc>(context);
+    String email = "";
+    String password = "";
     return Scaffold(
         // appBar: AppBar(
         //   title: Text("Welcome"),
@@ -21,10 +24,6 @@ class LoginScreen extends StatelessWidget {
             child: SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        // mainAxisAlignment: MainAxisAlignment.end,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flex(
             direction: Axis.vertical,
@@ -49,11 +48,6 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                         gradient: RadialGradient(
                             colors: [Colors.blueGrey, Colors.white70])),
-                    // width: 50,
-                    // height: 50,
-                    // alignment: Alignment.bottomCenter,
-                    // padding:
-                    // EdgeInsets.all(MediaQuery.of(context).size.height / 3),
                     child: SizedBox(
                         child: Icon(
                       Icons.lock_person,
@@ -65,13 +59,6 @@ class LoginScreen extends StatelessWidget {
               )
             ],
           ),
-
-          // decoration: BoxDecoration(
-          //     gradient: LinearGradient(colors: [
-          //   Colors.indigo.shade200,
-          //   Colors.yellowAccent.shade100,
-          //   Colors.grey.shade700
-          // ])),
           Flexible(
             child: Container(
               // color: Colors.amber,
@@ -89,12 +76,9 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            height: 2,
-          ),
           Flexible(
               child: SizedBox(
-            height: size.height / 4.5,
+            height: size.height / 4,
             child: Container(
               height: MediaQuery.of(context).size.height / 4.5,
               width: MediaQuery.of(context).size.width / 1.2,
@@ -103,7 +87,6 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
@@ -112,8 +95,6 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(8),
                       child: TextField(
-                        // textAlign: TextAlign.center,
-                        // textAlignVertical: TextAlignVertical.top,
                         controller: _usernameController,
                         style: TextStyle(color: Colors.amber),
                         decoration: InputDecoration(
@@ -124,11 +105,12 @@ class LoginScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
                                     color: Colors.lightGreenAccent))),
+                        onChanged: (value) {
+                          email = _usernameController.text;
+                          bloc.add(EmailValidateEvent(email));
+                        },
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8,
                   ),
                   SizedBox(
                     height: 50,
@@ -136,8 +118,6 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(8),
                       child: TextField(
-                        // textAlign: TextAlign.center,
-                        // textAlignVertical: TextAlignVertical.top,
                         controller: _passwordController,
                         style: TextStyle(color: Colors.amber),
                         decoration: InputDecoration(
@@ -148,9 +128,58 @@ class LoginScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
                                     color: Colors.lightGreenAccent))),
+                        obscureText: true,
+                        obscuringCharacter: "*",
+                        onChanged: (value) {
+                          password = _passwordController.text;
+                          bloc.add(PasswordValidateEvent(password));
+                        },
                       ),
                     ),
                   ),
+                  BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
+                    if (state is AuthLoggedInState) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "home", (route) => false);
+                    }
+                    // else if ((state is AuthLoadingState) &&
+                    //     (state!= AuthErrorState)) {
+                    //   showDialog(
+                    //       context: context,
+                    //       barrierDismissible: false,
+                    //       builder: (_) {
+                    //         return Dialog(
+                    //           backgroundColor: Colors.grey.shade800,
+                    //           child: Padding(
+                    //             padding: EdgeInsets.symmetric(vertical: 30),
+                    //             child: Column(
+                    //               mainAxisSize: MainAxisSize.min,
+                    //               children: [
+                    //                 CircularProgressIndicator(),
+                    //                 SizedBox(height: 5),
+                    //                 Text("Logging In")
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         );
+                    //       });
+                    // }
+                  }, builder: (context, state) {
+                    if (state is AuthErrorState) {
+                      return SizedBox(
+                        height: 20,
+                        child: Text(
+                          state.errorMessage,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.red, fontSize: 15),
+                        ),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: 20,
+                      );
+                    }
+                  }),
                   SizedBox(
                     height: 60,
                     child: Container(
@@ -165,16 +194,14 @@ class LoginScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                                 // color: Colors.deepOrangeAccent,
                                 border: Border.all(color: Colors.blue.shade900),
-                                // gradient: LinearGradient(colors: [
-                                //   Colors.white,
-                                //   Colors.indigo.shade400
-                                // ]),
                                 borderRadius: BorderRadius.circular(10)),
                             child: InkWell(
                               highlightColor: Colors.blueGrey.withOpacity(1),
                               // splashColor: Colors.deepOrangeAccent.shade700,
                               splashColor: Colors.blueGrey,
-                              onTap: () {},
+                              onTap: () {
+                                bloc.add(AuthSignInGoogleEvent());
+                              },
                               // customBorder: Border.all(color: Colors.amber),
                               borderRadius: BorderRadius.circular(10),
                               child: Container(
@@ -183,14 +210,6 @@ class LoginScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.asset("assets/images/google.png"),
-                                    // Text(
-                                    //   // "Google",""
-                                    //   "",
-                                    //   style: GoogleFonts.mavenPro(
-                                    //       color: Colors.white,
-                                    //       // fontWeight: FontWeight.w400,
-                                    //       fontSize: 20),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -215,33 +234,24 @@ class LoginScreen extends StatelessWidget {
                               // splashColor: Colors.deepOrangeAccent.shade700,
                               splashColor: Colors.deepOrangeAccent,
                               onTap: () {
-                                print(_usernameController!.text.toString());
-                                
-                                _firebaseAuth
-                                    .signInWithEmailAndPassword(
-                                        email: _usernameController!.text,
-                                        password: _passwordController!.text)
-                                    .then((value) =>
-                                        Navigator.pushNamed(context, "home"));
+                                UserCredentialModel credentialModel =
+                                    UserCredentialModel(
+                                        email: _usernameController.text,
+                                        password: _passwordController.text);
+                                bloc.add(AuthSignInEmailPasswordEvent(
+                                    credentialModel));
                               },
                               // customBorder: Border.all(color: Colors.amber),
                               borderRadius: BorderRadius.circular(10),
                               child: Container(
                                 alignment: Alignment.center,
-                                child:
-                                    // mainAxisSize: MainAxisSize.min,
-
-                                    Text(
+                                child: Text(
                                   "Login",
                                   style: GoogleFonts.mavenPro(
                                       color: Colors.white,
                                       // fontWeight: FontWeight.w400,
                                       fontSize: 23),
                                 ),
-                                // Icon(
-                                //   Icons.arrow_forward_ios_rounded,
-                                //   size: 20,
-                                // ),
                               ),
                             ),
                           ),
@@ -280,10 +290,6 @@ class LoginScreen extends StatelessWidget {
                         // color: Colors.deepOrangeAccent,
                         border:
                             Border.all(color: Colors.green.withOpacity(0.5)),
-                        // gradient: LinearGradient(colors: [
-                        //   Colors.white,
-                        //   Colors.indigo.shade400
-                        // ]),
                         borderRadius: BorderRadius.circular(10)),
                     child: InkWell(
                       highlightColor: Colors.green.withOpacity(1),
@@ -296,20 +302,13 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
                         alignment: Alignment.center,
-                        child:
-                            // mainAxisSize: MainAxisSize.min,
-
-                            Text(
+                        child: Text(
                           "Sign Up",
                           style: GoogleFonts.mavenPro(
                               color: Colors.white,
                               // fontWeight: FontWeight.w400,
                               fontSize: 15),
                         ),
-                        // Icon(
-                        //   Icons.arrow_forward_ios_rounded,
-                        //   size: 20,
-                        // ),
                       ),
                     ),
                   ),
@@ -340,6 +339,30 @@ class CustomDiagonalClipper extends CustomClipper<Path> {
   }
 }
 
+// class ShowDialog extends StatelessWidget{
+//   @override
+//   Widget build(BuildContext context) {
+//     showDialog(
+//                           context: context,
+//                           builder: (_) {
+//                             return Dialog(
+//                               backgroundColor: Colors.grey.shade800,
+//                               child: Padding(
+//                                 padding: EdgeInsets.symmetric(vertical: 30),
+//                                 child: Column(
+//                                   mainAxisSize: MainAxisSize.min,
+//                                   children: [
+//                                     CircularProgressIndicator(),
+//                                     SizedBox(height: 5),
+//                                     Text("Logging In")
+//                                   ],
+//                                 ),
+//                               ),
+//                             );
+//                           });
+//   }
+// }
+
 // class CustomClipPath extends CustomClipper<Path> {
 //   @override
 //   Path getClip(Size size) {
@@ -352,3 +375,4 @@ class CustomDiagonalClipper extends CustomClipper<Path> {
 //     path.
 //   }
 // }
+

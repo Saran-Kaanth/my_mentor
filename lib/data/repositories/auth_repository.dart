@@ -1,12 +1,12 @@
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 // import 'package:my_mentor/screens/home_screen.dart';
 // import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
+  // UserCredentialModel credentialModel=UserCredentialModel(email:"sa",password: "dfsd");
 
   Future<void> signUpWithEmailPassword(
       {required String email, required String password}) async {
@@ -25,6 +25,26 @@ class AuthRepository {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  Future<void> signInWithEmailPassword(
+      {required String email, required String password}) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "wrong-password") {
+        throw Exception("Wrong Password");
+      } else if (e.code == "invalid-email") {
+        throw Exception("Check with your email");
+      } else if (e.code == "user-disabled") {
+        throw Exception("Invalid User");
+      } else if (e.code == "user-not-found") {
+        throw Exception("User not Found");
+      }
+    } catch (e) {
+      throw (e.toString());
     }
   }
 

@@ -15,6 +15,12 @@ class AuthErrorState extends AuthState {
   AuthErrorState(this.errorMessage);
 }
 
+class AuthPasswordUpdatedSuccessState extends AuthState {}
+
+class EmailValidState extends AuthState {}
+
+class PasswordValidState extends AuthState {}
+
 // ------------------------------------------------------
 
 class AuthDataFailedState extends AuthState {

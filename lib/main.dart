@@ -18,7 +18,7 @@ void main() async {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => AuthBloc(),
+            create: (context) => AuthBloc(authRepository: AuthRepository()),
           ),
         ],
         child: MaterialApp(
