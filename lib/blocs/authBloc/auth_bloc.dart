@@ -2,6 +2,7 @@
 // import 'package:equatable/equatable.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_mentor/data/repositories/auth_repository.dart';
 part 'auth_event.dart';

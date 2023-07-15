@@ -1,0 +1,249 @@
+{
+    "public_identifier": "sarankaanthlakshmanan1605",
+    "profile_pic_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/person/sarankaanthlakshmanan1605/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20230709%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20230709T061513Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5e9d1fdad9694c77497f205c466b50a388ac4758ab2fb8ed541f816260501015",
+    "background_cover_image_url": null,
+    "first_name": "Saran Kaanth",
+    "last_name": "Lakshmanan",
+    "full_name": "Saran Kaanth Lakshmanan",
+    "follower_count": null,
+    "occupation": "Associate Analyst at Deloitte",
+    "headline": "Associate Analyst at Deloitte USI Consulting || AI & Data Operations",
+    "summary": null,
+    "country": "IN",
+    "country_full_name": "India",
+    "city": "Coimbatore",
+    "state": "Tamil Nadu",
+    "experiences": [
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 10,
+                "year": 2022
+            },
+            "ends_at": null,
+            "company": "Deloitte",
+            "company_linkedin_profile_url": "https://www.linkedin.com/company/deloitte/",
+            "title": "Associate Analyst",
+            "description": null,
+            "location": "Hyderabad, Telangana, India",
+            "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/deloitte/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20230709%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20230709T061518Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=dd6ea44bc731da39449c42a158c15f268c8c8af57a99aa1c2c0fbc06dea3d875"
+        },
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 7,
+                "year": 2022
+            },
+            "ends_at": {
+                "day": 1,
+                "month": 9,
+                "year": 2022
+            },
+            "company": "Ausweg Info Controls Pvt Ltd",
+            "company_linkedin_profile_url": "https://www.linkedin.com/company/ausweg/",
+            "title": "Python Developer",
+            "description": null,
+            "location": "Coimbatore, Tamil Nadu, India",
+            "logo_url": "https://media.licdn.com/dms/image/C560BAQEzgU3mnd1PFQ/company-logo_400_400/0/1643108114836?e=1697068800&v=beta&t=oIRxhvXoEj-mTcu1UNWiQ-orSCpA9E5jSHebajP_PHI"
+        },
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 12,
+                "year": 2021
+            },
+            "ends_at": {
+                "day": 1,
+                "month": 5,
+                "year": 2022
+            },
+            "company": "Tata Elxsi",
+            "company_linkedin_profile_url": "https://www.linkedin.com/company/tataelxsi/",
+            "title": "Full-stack Developer",
+            "description": null,
+            "location": "Bengaluru, Karnataka, India",
+            "logo_url": "https://s3.us-west-000.backblazeb2.com/proxycurl/company/tataelxsi/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20230709%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20230709T061518Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=c547edee7ef4755190b895c3ec298b7413c142ee75198f90af09a5ec4284cc63"
+        }
+    ],
+    "education": [
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 1,
+                "year": 2019
+            },
+            "ends_at": {
+                "day": 1,
+                "month": 1,
+                "year": 2022
+            },
+            "field_of_study": "Mathematical Statistics and Probability",
+            "degree_name": "B.Sc Computer Science with Data Analytics",
+            "school": "PSG College of Arts and Science",
+            "school_linkedin_profile_url": null,
+            "description": null,
+            "logo_url": "https://media.licdn.com/dms/image/C4E0BAQHBjcLiwupXIg/company-logo_400_400/0/1568951404223?e=1697068800&v=beta&t=vt4U8KQZexQW2MiJU6yE3Dg073OaMJ_J-MhyqG294o8",
+            "grade": null,
+            "activities_and_societies": null
+        }
+    ],
+    "languages": [],
+    "accomplishment_organisations": [],
+    "accomplishment_publications": [],
+    "accomplishment_honors_awards": [],
+    "accomplishment_patents": [],
+    "accomplishment_courses": [],
+    "accomplishment_projects": [
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 4,
+                "year": 2022
+            },
+            "ends_at": {
+                "day": 1,
+                "month": 5,
+                "year": 2022
+            },
+            "title": "GluDiaSys",
+            "description": "Mobile Healthcare application related to tracking of  glucose level and calories",
+            "url": null
+        },
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 10,
+                "year": 2021
+            },
+            "ends_at": {
+                "day": 1,
+                "month": 11,
+                "year": 2021
+            },
+            "title": "GOTOO2 (Oxygen Locator)",
+            "description": "Medical Application for finding hospital with oxygen levels",
+            "url": null
+        },
+        {
+            "starts_at": {
+                "day": 1,
+                "month": 9,
+                "year": 2021
+            },
+            "ends_at": {
+                "day": 1,
+                "month": 11,
+                "year": 2021
+            },
+            "title": "Pulse Price Prediction",
+            "description": "Web application based on Machine Learning to predict the prices of the pulse(crops)",
+            "url": null
+        }
+    ],
+    "accomplishment_test_scores": [],
+    "volunteer_work": [],
+    "certifications": [],
+    "connections": null,
+    "people_also_viewed": [
+        {
+            "link": "https://www.linkedin.com/in/babesha-venkata-priya-99b61b20b",
+            "name": "Babesha Venkata priya",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/kevin-sam-thomas-0a607b21a",
+            "name": "Kevin Sam Thomas",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/kishorekanna-sathya-5a7591192",
+            "name": "Kishorekanna Sathya",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/rohith-selvakumar",
+            "name": "Rohith Selvakumar",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/victor-paul-213059206",
+            "name": "Victor Paul",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/sathishkumar-r-aa08b81a5",
+            "name": "SATHISHKUMAR R",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/hansoliv",
+            "name": "Hannah Olivia Clement",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/s-dhanush-raj-956121138",
+            "name": "S.DHANUSH RAJ",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/vimal-p-93194b200",
+            "name": "Vimal P",
+            "summary": null,
+            "location": null
+        },
+        {
+            "link": "https://www.linkedin.com/in/nithish-j-36a006218",
+            "name": "NITHISH J",
+            "summary": null,
+            "location": null
+        }
+    ],
+    "recommendations": [],
+    "activities": [],
+    "similarly_named_profiles": [],
+    "articles": [],
+    "groups": [],
+    "phone_numbers": [],
+    "social_networking_services": [],
+    "skills": [
+        "UiPath",
+        "SQL",
+        "Django REST Framework",
+        "FastAPI",
+        "Flutter",
+        "Data Analytics",
+        "Computer Science",
+        "Microsoft Excel",
+        "Presentations",
+        "Analytics",
+        "IBM SPSS Statistics",
+        "c",
+        "c++",
+        "Pandas (Software)",
+        "Python (Programming Language)",
+        "Django"
+    ],
+    "inferred_salary": {
+        "min": null,
+        "max": null
+    },
+    "gender": null,
+    "birth_date": null,
+    "industry": null,
+    "extra": {
+        "github_profile_id": null,
+        "twitter_profile_id": null,
+        "facebook_profile_id": null
+    },
+    "interests": [],
+    "personal_emails": [],
+    "personal_numbers": []
+}

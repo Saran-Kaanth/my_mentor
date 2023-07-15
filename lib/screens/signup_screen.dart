@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
+import 'package:my_mentor/data/repositories/models/user.dart';
 
 class SignUpScreen extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
@@ -11,7 +12,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<AuthBloc>(context);
+    final authBlocSignUp = BlocProvider.of<AuthBloc>(context);
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -49,7 +50,7 @@ class SignUpScreen extends StatelessWidget {
                           controller: _usernameController,
                           onChanged: (value) {
                             email = value;
-                            bloc.add(EmailValidateEvent(email));
+                            authBlocSignUp.add(EmailValidateEvent(email));
                           },
                           style: TextStyle(color: Colors.amber),
                           decoration: InputDecoration(
@@ -83,7 +84,7 @@ class SignUpScreen extends StatelessWidget {
                           controller: _passwordController,
                           onChanged: (value) {
                             password = value;
-                            bloc.add(PasswordValidateEvent(password));
+                            authBlocSignUp.add(PasswordValidateEvent(password));
                           },
                           style: TextStyle(color: Colors.amber),
                           decoration: InputDecoration(
@@ -125,16 +126,17 @@ class SignUpScreen extends StatelessWidget {
                         child: BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                             if (state is AuthLoadingState) {
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else {
                               return CupertinoButton(
                                   child: Text("Submit"),
                                   onPressed: () {
-                                    bloc.add(AuthSignUpEmailPasswordEvent(
-                                        _usernameController.text,
-                                        _passwordController.text));
+                                    authBlocSignUp.add(
+                                        AuthSignUpEmailPasswordEvent(
+                                            _usernameController.text,
+                                            _passwordController.text));
                                   });
                             }
                           },

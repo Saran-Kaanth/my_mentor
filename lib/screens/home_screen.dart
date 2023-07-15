@@ -6,6 +6,8 @@ import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 // import 'package:my_mentor/data/repositories/auth_repository.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<AuthBloc>(context);
@@ -13,20 +15,19 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Center(
-            child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthLoggedOutState) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, "login", (route) => false);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Logged Out Successfully"),
-                backgroundColor: Colors.deepOrangeAccent,
-              ));
-            }
-          },
-          builder: (context, state) {
-            if (state is AuthLoggedInState) {
-              return Column(
+          child: BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthLoggedOutState) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "login", (route) => false);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Logged Out Successfully"),
+                  backgroundColor: Colors.deepOrangeAccent,
+                ));
+              }
+            },
+            child: Container(
+              child: Column(
                 children: [
                   Text(
                     user.email.toString(),
@@ -42,17 +43,67 @@ class HomeScreen extends StatelessWidget {
                       ),
                       onPressed: () {
                         bloc.add(AuthSignOutEvent());
-                      })
+                      }),
                 ],
-              );
-            } else {
-              return Container(
-                child: Center(child: Text("Please Log in Again")),
-              );
-            }
-          },
-        )),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
 }
+
+
+// child: BlocConsumer<AuthBloc, AuthState>(
+//           listener: (context, state) {
+//             if (state is AuthLoggedOutState) {
+//               Navigator.pushNamedAndRemoveUntil(
+//                   context, "login", (route) => false);
+//               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//                 content: Text("Logged Out Successfully"),
+//                 backgroundColor: Colors.deepOrangeAccent,
+//               ));
+//             }
+//           },
+//           builder: (context, state) {
+//             print("The originial state");
+//             print(state.toString());
+//             if (state is AuthLoggedInState) {
+//               return Column(
+//                 children: [
+//                   Text(
+//                     user.email.toString(),
+//                     style: TextStyle(color: Colors.deepOrangeAccent),
+//                   ),
+//                   SizedBox(
+//                     height: 10,
+//                   ),
+//                   CupertinoButton(
+//                       child: Text(
+//                         "Sign out",
+//                         style: TextStyle(color: Colors.white),
+//                       ),
+//                       onPressed: () {
+//                         bloc.add(AuthSignOutEvent());
+//                       }),
+//                 ],
+//               );
+//             } else {
+//               return Center(
+//                 child: Column(
+//                   children: [
+//                     Text("Please Log in Again"),
+//                     ElevatedButton(
+//                         onPressed: () {
+//                           Navigator.pushNamedAndRemoveUntil(
+//                               context, "login", (route) => false);
+//                         },
+//                         child: Text("log In"))
+//                   ],
+//                 ),
+//               );
+//             }
+//             // return Container();
+//           },
+//         )

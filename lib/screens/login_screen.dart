@@ -6,20 +6,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final TextEditingController _loginScreenUsernameController =
+      TextEditingController();
+  final TextEditingController _loginScreenPasswordController =
+      TextEditingController();
+  String email = "";
+  String password = "";
+
+  LoginScreen({super.key});
+
+  void dispose() {
+    _loginScreenPasswordController.dispose();
+    _loginScreenPasswordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final bloc = BlocProvider.of<AuthBloc>(context);
-    String email = "";
-    String password = "";
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text("Welcome"),
-        //   centerTitle: true,
-        // ),
         body: SafeArea(
             child: SingleChildScrollView(
       child: Column(
@@ -62,16 +68,17 @@ class LoginScreen extends StatelessWidget {
           Flexible(
             child: Container(
               // color: Colors.amber,
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Login",
-                    style: GoogleFonts.mavenPro(
+                    style: TextStyle(
                         fontSize: 35,
                         color: Colors.deepOrangeAccent,
-                        fontWeight: FontWeight.w400),
-                  ),
+                        fontWeight: FontWeight.normal),
+                  )
+
                 ],
               ),
             ),
@@ -95,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(8),
                       child: TextField(
-                        controller: _usernameController,
+                        controller: _loginScreenUsernameController,
                         style: TextStyle(color: Colors.amber),
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.account_circle_rounded),
@@ -106,7 +113,7 @@ class LoginScreen extends StatelessWidget {
                                 borderSide: BorderSide(
                                     color: Colors.lightGreenAccent))),
                         onChanged: (value) {
-                          email = _usernameController.text;
+                          email = _loginScreenUsernameController.text;
                           bloc.add(EmailValidateEvent(email));
                         },
                       ),
@@ -118,7 +125,7 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(8),
                       child: TextField(
-                        controller: _passwordController,
+                        controller: _loginScreenPasswordController,
                         style: TextStyle(color: Colors.amber),
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.key_rounded),
@@ -131,7 +138,7 @@ class LoginScreen extends StatelessWidget {
                         obscureText: true,
                         obscuringCharacter: "*",
                         onChanged: (value) {
-                          password = _passwordController.text;
+                          password = _loginScreenPasswordController.text;
                           bloc.add(PasswordValidateEvent(password));
                         },
                       ),
@@ -236,8 +243,10 @@ class LoginScreen extends StatelessWidget {
                               onTap: () {
                                 UserCredentialModel credentialModel =
                                     UserCredentialModel(
-                                        email: _usernameController.text,
-                                        password: _passwordController.text);
+                                        email:
+                                            _loginScreenUsernameController.text,
+                                        password: _loginScreenPasswordController
+                                            .text);
                                 bloc.add(AuthSignInEmailPasswordEvent(
                                     credentialModel));
                               },
