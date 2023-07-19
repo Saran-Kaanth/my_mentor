@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/data/repositories/auth_repository.dart';
+import 'package:my_mentor/data/repositories/models/user.dart';
 // import 'package:my_mentor/screens/academic_details_screen.dart';
 import 'package:my_mentor/screens/home_screen.dart';
 import 'package:my_mentor/screens/login_screen.dart';
+import 'package:my_mentor/screens/profile_details_screen.dart';
 import 'package:my_mentor/screens/signup_screen.dart';
 import 'package:my_mentor/screens/splash_screen.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
               textTheme: GoogleFonts.mavenProTextTheme(),
             ),
             darkTheme: ThemeData(
-              primaryColor: Colors.blue,
+              primaryColor: Colors.blue.shade800,
               primarySwatch: Colors.blue,
               brightness: Brightness.dark,
               textTheme: GoogleFonts.mavenProTextTheme(),
@@ -50,7 +52,8 @@ class MyApp extends StatelessWidget {
               'login': (context) => LoginScreen(),
               "signup": (context) => SignUpScreen(),
               "home": (context) => const HomeScreen(),
-              "splash": (context) => const SplashScreen()
+              "splash": (context) => const SplashScreen(),
+              // "profiledetails": (context) => const ProfileDetailsScreen()
               // "academicDetails": (context) => AcademicDetailsScreen(),
             },
           ),

@@ -6,7 +6,10 @@ class AuthInitialState extends AuthState {}
 
 class AuthLoadingState extends AuthState {}
 
-class AuthLoggedInState extends AuthState {}
+class AuthLoggedInState extends AuthState {
+  UserProfileDetailsModel? userProfileDetailsModel;
+  AuthLoggedInState({this.userProfileDetailsModel});
+}
 
 class AuthLoggedOutState extends AuthState {}
 

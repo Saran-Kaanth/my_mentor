@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/data/repositories/models/user.dart';
+import 'package:my_mentor/screens/profile_details_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
@@ -30,8 +31,17 @@ class SignUpScreen extends StatelessWidget {
               child: BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthLoggedInState) {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "home", (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileDetailsScreen(
+                            userProfileDetailsModel:
+                                state.userProfileDetailsModel,
+                          ),
+                        ),
+                        (route) => false);
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, "profiledetails", (route) => false);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("Logged In Successfully"),
                       backgroundColor: Colors.deepOrangeAccent,
@@ -75,6 +85,7 @@ class SignUpScreen extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
+
                       Container(
                         // alignment: Alignment.center,
                         // padding: EdgeInsets.all(size.width / 4),
@@ -141,7 +152,35 @@ class SignUpScreen extends StatelessWidget {
                             }
                           },
                         ),
-                      )
+                      ),
+                      Container(
+                        // padding: EdgeInsets.all(),
+                        width: MediaQuery.of(context).size.width / 3.2,
+                        height: MediaQuery.of(context).size.width / 7,
+                        decoration: BoxDecoration(
+                            // color: Colors.deepOrangeAccent,
+                            border: Border.all(color: Colors.blue.shade900),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: InkWell(
+                          highlightColor: Colors.blueGrey.withOpacity(1),
+                          // splashColor: Colors.deepOrangeAccent.shade700,
+                          splashColor: Colors.blueGrey,
+                          onTap: () {
+                            authBlocSignUp.add(AuthSignInGoogleEvent());
+                          },
+                          // customBorder: Border.all(color: Colors.amber),
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            // alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset("assets/images/google.png"),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
                       // if (state is AuthLoadingState) {
                       //   return Center(

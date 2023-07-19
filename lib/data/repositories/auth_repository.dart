@@ -1,22 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_mentor/data/repositories/models/user.dart';
 // import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 // import 'package:my_mentor/screens/home_screen.dart';
 // import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
+  User? currentUser;
   // UserCredentialModel credentialModel=UserCredentialModel(email:"sa",password: "dfsd");
-
-  Future<void> signUpWithEmailPassword(
+  // UserProfileDetailsModel dummyUserProfileModel = UserProfileDetailsModel();
+  Future<dynamic> signUpWithEmailPassword(
       {required String email, required String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
-      // HomeScreen();
-      // _firebaseAuth.signInWithEmailAndPassword(email: , password: password)
-      // print(_firebaseAuth.currentUser!.email);
+      UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+      currentUser = _firebaseAuth.currentUser;
+      return await initialDataSetup(
+          userCredential.additionalUserInfo!.isNewUser);
+      // if (userCredential.additionalUserInfo!.isNewUser) {
+      //   return await initialDataSetup();
+      // }
+      // return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         throw Exception("The password is weak");
@@ -28,11 +35,47 @@ class AuthRepository {
     }
   }
 
+  Future<UserProfileDetailsModel> initialDataSetup(bool isNewUser) async {
+    // User currentUser = _firebaseAuth.currentUser!;
+    UserProfileDetailsModel userProfileDetailsModel = UserProfileDetailsModel(
+        currentUser!.uid,
+        currentUser!.displayName != "" ? currentUser!.displayName : null,
+        null,
+        null,
+        currentUser!.photoURL == "" ? null : currentUser!.photoURL,
+        null,
+        null,
+        currentUser!.email,
+        null,
+        null,
+        null,
+        null,
+        [],
+        0,
+        [],
+        false,
+        currentUser!.emailVerified);
+    if (isNewUser) {
+      await _dbRef
+          .child("profileDetails")
+          .child(currentUser!.uid.toString())
+          .set(userProfileDetailsModel.toMap())
+          .then((value) => print("inital data stored"))
+          .onError((error, stackTrace) => print(error.toString()));
+      return userProfileDetailsModel;
+    }
+
+    return userProfileDetailsModel;
+  }
+
   Future<void> signInWithEmailPassword(
       {required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      // Book book = Book(title: "science", sampleList: ["saran", "nihal"]);
+
+      // await _dbRef.remove();
     } on FirebaseAuthException catch (e) {
       if (e.code == "wrong-password") {
         throw Exception("Wrong Password");
@@ -75,23 +118,28 @@ class AuthRepository {
     }
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<dynamic> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
           idToken: googleAuth!.idToken, accessToken: googleAuth.accessToken);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential authResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      currentUser = _firebaseAuth.currentUser;
+      // print(authResult.additionalUserInfo!.profile);
+      return await initialDataSetup(authResult.additionalUserInfo!.isNewUser);
+      // if (authResult.additionalUserInfo!.isNewUser) {
+      //   return await initialDataSetup();
+      // }
+      // return;
     } catch (e) {
       throw Exception(e.toString());
     }
   }
 
   Future<String> AuthDataModulation({required email, required password}) async {
-    print("Repo In");
-    print(email);
-    print(password);
     if (email.toString().isEmpty || password.toString().isEmpty) {
       return "Failed";
     } else {

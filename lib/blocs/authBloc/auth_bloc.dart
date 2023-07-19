@@ -5,6 +5,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_mentor/data/repositories/auth_repository.dart';
+import 'package:my_mentor/data/repositories/models/user.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -17,10 +18,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           emit(AuthLoadingState());
 
-          await authRepository.signUpWithEmailPassword(
-              email: event.email, password: event.password);
-
-          emit(AuthLoggedInState());
+          UserProfileDetailsModel initialData =
+              await authRepository.signUpWithEmailPassword(
+                  email: event.email, password: event.password);
+          emit(AuthLoggedInState(userProfileDetailsModel: initialData));
         } catch (e) {
           emit(AuthErrorState(e.toString().substring(11)));
         }
@@ -73,9 +74,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(AuthLoadingState());
 
-        await authRepository.signInWithGoogle();
+        UserProfileDetailsModel initialData =
+            await authRepository.signInWithGoogle();
 
-        emit(AuthLoggedInState());
+        emit(AuthLoggedInState(userProfileDetailsModel: initialData));
       } catch (e) {
         print("Authentication Google Error");
         print(e.toString());

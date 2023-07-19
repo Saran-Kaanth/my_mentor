@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -6,15 +6,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  LoginScreen({super.key});
+  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  
+  String email = "";
+  String password = "";
   final TextEditingController _loginScreenUsernameController =
       TextEditingController();
   final TextEditingController _loginScreenPasswordController =
       TextEditingController();
-  String email = "";
-  String password = "";
 
-  LoginScreen({super.key});
+  
 
   void dispose() {
     _loginScreenPasswordController.dispose();

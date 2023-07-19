@@ -13,24 +13,11 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 3500), () {
+    Future.delayed(const Duration(milliseconds: 1500), () {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => AuthService().handleAuth()));
     });
     super.initState();
-    // Future.delayed(const Duration(milliseconds: 5000), () {
-    //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
-    //     if (user == null) {
-    //       print("User is logged out");
-    //       Navigator.pushReplacementNamed(context, "login");
-    //     } else {
-    //       print(user);
-    //       print("User is Logged in");
-    //       print(context);
-    //       Navigator.pushReplacementNamed(context, "home");
-    //     }
-    //   });
-    // });
   }
 
   @override
@@ -88,3 +75,18 @@ class AuthService {
     );
   }
 }
+
+
+// Future.delayed(const Duration(milliseconds: 5000), () {
+    //   FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    //     if (user == null) {
+    //       print("User is logged out");
+    //       Navigator.pushReplacementNamed(context, "login");
+    //     } else {
+    //       print(user);
+    //       print("User is Logged in");
+    //       print(context);
+    //       Navigator.pushReplacementNamed(context, "home");
+    //     }
+    //   });
+    // });

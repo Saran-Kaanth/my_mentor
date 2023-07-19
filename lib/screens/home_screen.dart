@@ -44,6 +44,14 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () {
                         bloc.add(AuthSignOutEvent());
                       }),
+                  CupertinoButton(
+                      child: Text(
+                        "Profile Page",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, "profiledetails");
+                      }),
                 ],
               ),
             ),

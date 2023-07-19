@@ -1,70 +1,100 @@
-class UserPersonalDetailsModel {
+class UserProfileDetailsModel {
   final String? userId;
   final String? email;
-  final String? displayName;
-  final String? fullName;
-  final String? dob;
-  final String? occupation;
-  final String? headline;
-  final String? city;
-  final String? state;
-  final String? country;
-  final String? phone;
-  final List? connectionList;
-  final int? connections;
-  final bool? isMentor;
+  String? displayName;
+  String? fullName;
+  String? dob;
+  String? photoUrl;
+  String? occupation;
+  String? headline;
+  String? city;
+  String? state;
+  String? country;
+  String? phone;
+  List? connectionList;
+  int? connections;
+  List? skills;
+  bool? isMentor;
+  final bool? emailVerified;
 
-  UserPersonalDetailsModel(
+  UserProfileDetailsModel(
       this.userId,
-      this.email,
       this.displayName,
       this.fullName,
       this.dob,
+      this.photoUrl,
       this.occupation,
       this.headline,
+      this.email,
       this.city,
       this.state,
       this.country,
       this.phone,
       this.connectionList,
       this.connections,
-      this.isMentor);
+      this.skills,
+      this.isMentor,
+      this.emailVerified);
 
-  UserPersonalDetailsModel.fromMap(Map<String, dynamic> userPersonalData)
-      : userId = userPersonalData["userId"],
-        email = userPersonalData["email"],
-        displayName = userPersonalData["displayName"],
-        fullName = userPersonalData["fullName"],
-        dob = userPersonalData["dob"],
-        occupation = userPersonalData["occupation"],
-        headline = userPersonalData["headline"],
-        city = userPersonalData["city"],
-        state = userPersonalData["state"],
-        country = userPersonalData["country"],
-        phone = userPersonalData["phone"],
-        connectionList = userPersonalData["connectionList"],
-        connections = userPersonalData["connections"],
-        isMentor = userPersonalData["isMentor"];
+  UserProfileDetailsModel.fromMap(Map<String, dynamic> userProfileData)
+      : userId = userProfileData["userId"],
+        email = userProfileData["email"],
+        displayName = userProfileData["displayName"],
+        fullName = userProfileData["fullName"],
+        dob = userProfileData["dob"],
+        photoUrl = userProfileData["photoUrl"],
+        occupation = userProfileData["occupation"],
+        headline = userProfileData["headline"],
+        city = userProfileData["city"],
+        state = userProfileData["state"],
+        country = userProfileData["country"],
+        phone = userProfileData["phone"],
+        connectionList = userProfileData["connectionList"],
+        connections = userProfileData["connections"],
+        skills = userProfileData["skills"],
+        isMentor = userProfileData["isMentor"],
+        emailVerified = userProfileData["emailVerified"];
 
-  // UserPersonalDetailsModel.fromMap(Map<String,dynamic> userPersonalData):
-  // id=userPersonalData["userId"],
+  Map<String, dynamic> toMap() {
+    return {
+      "userid": userId,
+      "email": email,
+      "displayName": displayName,
+      "fullName": fullName,
+      "dob": dob,
+      "photoUrl": photoUrl,
+      "occupation": occupation,
+      "headline": headline,
+      "city": city,
+      "state": state,
+      "country": country,
+      "phone": phone,
+      "connectionList": connectionList,
+      "connections": connections,
+      "skills": skills,
+      "isMentor": isMentor,
+      "emailVerified": emailVerified
+    };
+  }
+  // UserPersonalDetailsModel.fromMap(Map<String,dynamic> userProfileData):
+  // id=userProfileData["userId"],
 }
 
-
-
 class Book {
-  final int id;
-  final String title;
-  final int year;
+  final int? id;
+  final String? title;
+  int? year;
+  List? sampleList = [];
 
-  Book(this.id, this.title, this.year);
+  Book({this.id, this.title, this.year, this.sampleList});
 
   Book.fromMap(Map<String, dynamic> data)
       : id = data['id'],
         title = data['title'],
-        year = data['year'];
+        year = data['year'],
+        sampleList = data["sampleList"];
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'title': title, 'year': year};
+    return {'id': id, 'title': title, 'year': year, 'list': sampleList};
   }
 }
