@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
+import 'package:my_mentor/data/repositories/auth_repository.dart';
 // import 'package:my_mentor/data/repositories/auth_repository.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -50,12 +51,17 @@ class HomeScreen extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
-                      user!.displayName.toString(),
+                      user.displayName.toString(),
                       style: TextStyle(
                           color: Colors.deepOrangeAccent,
                           fontSize: 20,
                           fontWeight: FontWeight.w300),
-                    )
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          bloc.add(AuthSignOutEvent());
+                        },
+                        icon: Icon(Icons.output_sharp)),
                   ],
                 )
               ],

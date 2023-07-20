@@ -427,6 +427,10 @@ class ProfileDetailsScreen extends StatelessWidget {
 
                               await ProfileRepository()
                                   .updateUserProfile(userProfileDetailsModel!);
+                              await user.updateDisplayName(
+                                  userProfileDetailsModel!.displayName);
+                              await user.updatePhotoURL(
+                                  userProfileDetailsModel!.photoUrl);
                               Navigator.pushNamedAndRemoveUntil(
                                   context, "route", (route) => false);
                             })
