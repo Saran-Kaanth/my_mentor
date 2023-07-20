@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_mentor/screens/home_screen.dart';
 import 'package:my_mentor/screens/login_screen.dart';
+import 'package:my_mentor/screens/route_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class AuthService {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
-          return const HomeScreen();
+          return RouteScreen();
         } else {
           return LoginScreen();
         }

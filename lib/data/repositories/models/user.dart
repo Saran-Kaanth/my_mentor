@@ -36,7 +36,25 @@ class UserProfileDetailsModel {
       this.isMentor,
       this.emailVerified);
 
-  UserProfileDetailsModel.fromMap(Map<String, dynamic> userProfileData)
+// UserProfileDetailsModel.fromDocSnapshot(Map<String, dynamic> userProfileData)
+//       : userId = userProfileData["userId"],
+//         email = userProfileData["email"],
+//         displayName = userProfileData["displayName"],
+//         fullName = userProfileData["fullName"],
+//         dob = userProfileData["dob"],
+//         photoUrl = userProfileData["photoUrl"],
+//         occupation = userProfileData["occupation"],
+//         headline = userProfileData["headline"],
+//         city = userProfileData["city"],
+//         state = userProfileData["state"],
+//         country = userProfileData["country"],
+//         phone = userProfileData["phone"],
+//         connectionList = userProfileData["connectionList"],
+//         connections = userProfileData["connections"],
+//         skills = userProfileData["skills"],
+//         isMentor = userProfileData["isMentor"],
+//         emailVerified = userProfileData["emailVerified"];
+  UserProfileDetailsModel.fromMap(Map<dynamic, dynamic> userProfileData)
       : userId = userProfileData["userId"],
         email = userProfileData["email"],
         displayName = userProfileData["displayName"],

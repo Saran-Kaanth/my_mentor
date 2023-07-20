@@ -9,6 +9,7 @@ import 'package:my_mentor/data/repositories/models/user.dart';
 import 'package:my_mentor/screens/home_screen.dart';
 import 'package:my_mentor/screens/login_screen.dart';
 import 'package:my_mentor/screens/profile_details_screen.dart';
+import 'package:my_mentor/screens/route_screen.dart';
 import 'package:my_mentor/screens/signup_screen.dart';
 import 'package:my_mentor/screens/splash_screen.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
               "signup": (context) => SignUpScreen(),
               "home": (context) => const HomeScreen(),
               "splash": (context) => const SplashScreen(),
+              "route": (context) => const RouteScreen(),
               // "profiledetails": (context) => const ProfileDetailsScreen()
               // "academicDetails": (context) => AcademicDetailsScreen(),
             },

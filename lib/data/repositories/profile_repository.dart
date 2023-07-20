@@ -18,4 +18,24 @@ class ProfileRepository {
       throw Exception(e.toString());
     }
   }
+
+  Future<UserProfileDetailsModel> retrieveUserProfile() async {
+    UserProfileDetailsModel? profileData;
+    try {
+      await dbRef.child(currentUser!.uid).once().then((value) {
+        Map all_data = value.snapshot.value as Map;
+
+        all_data.forEach((key, value) {
+          profileData = UserProfileDetailsModel.fromMap(all_data);
+
+          // profileData[key.toString()] = value;
+        });
+
+        return profileData;
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+    return profileData!;
+  }
 }
