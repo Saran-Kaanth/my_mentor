@@ -27,6 +27,9 @@ class HomeScreen extends StatelessWidget {
                 backgroundColor: Colors.deepOrangeAccent,
               ));
             }
+            // } else if (state is AuthLoadedState) {
+            //   Navigator.pop(context);
+            // }
           },
           child: Container(
             child: Column(
@@ -57,11 +60,7 @@ class HomeScreen extends StatelessWidget {
                           fontSize: 20,
                           fontWeight: FontWeight.w300),
                     ),
-                    IconButton(
-                        onPressed: () async {
-                          bloc.add(AuthSignOutEvent());
-                        },
-                        icon: Icon(Icons.output_sharp)),
+                    
                   ],
                 )
               ],

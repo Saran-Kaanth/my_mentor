@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
+import 'package:my_mentor/screens/example_screen.dart';
 import 'package:my_mentor/screens/home_screen.dart';
-import 'package:my_mentor/screens/profile_screen.dart';
+import 'package:my_mentor/screens/my_profile_screen.dart';
 import 'package:my_mentor/screens/search_screen.dart';
 
 class RouteScreen extends StatefulWidget {
@@ -17,8 +20,9 @@ class RouteScreenState extends State<RouteScreen> {
 
   List<Widget> widgetOptions = [
     const HomeScreen(),
-    SearchScreen(),
-    ProfileScreen()
+    const Cards(),
+    // SearchScreen(),
+    MyProfileScreen()
   ];
 
   void onItemTap(int index) {
@@ -44,6 +48,7 @@ class RouteScreenState extends State<RouteScreen> {
 
   Widget bottomBar() {
     Size size = MediaQuery.of(context).size;
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
     return Container(
       // height: size.width / 4.5,
       // color: Colors.blueGrey.shade800,
@@ -56,6 +61,7 @@ class RouteScreenState extends State<RouteScreen> {
         child: GNav(
             padding: EdgeInsets.all(size.width / 20),
             gap: 4,
+            // haptic: true,
             backgroundColor: Colors.grey.shade900,
             activeColor: Colors.deepOrangeAccent,
             color: Colors.blue.shade800,
@@ -72,6 +78,9 @@ class RouteScreenState extends State<RouteScreen> {
               GButton(
                 icon: Icons.account_circle_outlined,
                 text: "Profile",
+                onPressed: () {
+                  profileBloc.add(ProfileLoadEvent());
+                },
               )
             ]),
       ),

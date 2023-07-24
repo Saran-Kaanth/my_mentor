@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           UserProfileDetailsModel initialData =
               await authRepository.signUpWithEmailPassword(
                   email: event.email, password: event.password);
+          // emit(AuthLoadedState());
           emit(AuthLoggedInState(userProfileDetailsModel: initialData));
         } catch (e) {
           emit(AuthErrorState(e.toString().substring(11)));
@@ -35,10 +36,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           event.credentialModel.password != "") {
         try {
           emit(AuthLoadingState());
-          await authRepository.signInWithEmailPassword(
-              email: event.credentialModel.email,
-              password: event.credentialModel.password);
-          emit(AuthLoggedInState());
+          UserProfileDetailsModel initialData =
+              await authRepository.signInWithEmailPassword(
+                  email: event.credentialModel.email,
+                  password: event.credentialModel.password);
+          emit(AuthLoggedInState(userProfileDetailsModel: initialData));
         } catch (e) {
           emit(AuthErrorState(e.toString().substring(11)));
         }
@@ -51,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(AuthLoadingState());
         await authRepository.signOut();
+        // emit(AuthLoadedState());
         emit(AuthLoggedOutState());
       } catch (e) {
         emit(AuthErrorState(e.toString()));
@@ -92,17 +95,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(EmailValidState());
       }
-      // try {
-      //   if (EmailValidator.validate(event.email) == false) {
-      //     print("Invalid Email");
-      //     emit(AuthErrorState("Please Enter Valid Email"));
-      //   } else {
-      //     print("Valid Email");
-      //     emit(EmailValidState());
-      //   }
-      // } catch (e) {
-      //   throw Exception(e.toString());
-      // }
     });
 
     on<PasswordValidateEvent>((event, emit) {

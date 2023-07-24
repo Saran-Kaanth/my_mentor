@@ -36,7 +36,6 @@ class AuthRepository {
   }
 
   Future<UserProfileDetailsModel> initialDataSetup(bool isNewUser) async {
-    // User currentUser = _firebaseAuth.currentUser!;
     UserProfileDetailsModel userProfileDetailsModel = UserProfileDetailsModel(
         currentUser!.uid,
         currentUser!.displayName != "" ? currentUser!.displayName : null,
@@ -68,14 +67,31 @@ class AuthRepository {
     return userProfileDetailsModel;
   }
 
-  Future<void> signInWithEmailPassword(
+  Future<dynamic> signInWithEmailPassword(
       {required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      // Book book = Book(title: "science", sampleList: ["saran", "nihal"]);
-
-      // await _dbRef.remove();
+      currentUser = _firebaseAuth.currentUser;
+      UserProfileDetailsModel userProfileDetailsModel = UserProfileDetailsModel(
+          currentUser!.uid,
+          currentUser!.displayName != "" ? currentUser!.displayName : null,
+          null,
+          null,
+          currentUser!.photoURL == "" ? null : currentUser!.photoURL,
+          null,
+          null,
+          currentUser!.email,
+          null,
+          null,
+          null,
+          null,
+          [],
+          0,
+          [],
+          false,
+          currentUser!.emailVerified);
+      return userProfileDetailsModel;
     } on FirebaseAuthException catch (e) {
       if (e.code == "wrong-password") {
         throw Exception("Wrong Password");

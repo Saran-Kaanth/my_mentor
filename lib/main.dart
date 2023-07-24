@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
+import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
+import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
 import 'package:my_mentor/data/repositories/auth_repository.dart';
 import 'package:my_mentor/data/repositories/models/user.dart';
 // import 'package:my_mentor/screens/academic_details_screen.dart';
@@ -31,6 +33,12 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (context) => AuthBloc(authRepository: AuthRepository()),
             ),
+            BlocProvider(
+              create: (context) => ProfileBloc(),
+            ),
+            BlocProvider(
+              create: (context) => PostBloc(),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -55,7 +63,7 @@ class MyApp extends StatelessWidget {
               "home": (context) => const HomeScreen(),
               "splash": (context) => const SplashScreen(),
               "route": (context) => const RouteScreen(),
-              // "profiledetails": (context) => const ProfileDetailsScreen()
+              // "profiledetails": (context) => ProfileDetailsScreen(),
               // "academicDetails": (context) => AcademicDetailsScreen(),
             },
           ),

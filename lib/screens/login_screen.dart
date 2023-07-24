@@ -8,15 +8,13 @@ import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  
+
   String email = "";
   String password = "";
   final TextEditingController _loginScreenUsernameController =
       TextEditingController();
   final TextEditingController _loginScreenPasswordController =
       TextEditingController();
-
-  
 
   void dispose() {
     _loginScreenPasswordController.dispose();
@@ -80,7 +78,6 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.deepOrangeAccent,
                         fontWeight: FontWeight.normal),
                   )
-
                 ],
               ),
             ),
@@ -149,10 +146,26 @@ class LoginScreen extends StatelessWidget {
                   BlocConsumer<AuthBloc, AuthState>(listener: (context, state) {
                     if (state is AuthLoggedInState) {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, "home", (route) => false);
+                          context, "route", (route) => false);
                     }
-                    // else if ((state is AuthLoadingState) &&
-                    //     (state!= AuthErrorState)) {
+                    //   if (state is AuthLoggedInState) {
+                    //   Navigator.pushAndRemoveUntil(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => ProfileDetailsScreen(
+                    //           userProfileDetailsModel:
+                    //               state.userProfileDetailsModel,
+                    //         ),
+                    //       ),
+                    //       (route) => false);
+                    //   // Navigator.pushNamedAndRemoveUntil(
+                    //   //     context, "profiledetails", (route) => false);
+                    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //     content: Text("Logged In Successfully"),
+                    //     backgroundColor: Colors.deepOrangeAccent,
+                    //   ));
+                    // }
+                    // else if ((state is AuthLoadingState)) {
                     //   showDialog(
                     //       context: context,
                     //       barrierDismissible: false,
@@ -172,6 +185,9 @@ class LoginScreen extends StatelessWidget {
                     //           ),
                     //         );
                     //       });
+                    // }
+                    // } else if (state is AuthLoadedState) {
+                    //   Navigator.pop(context);
                     // }
                   }, builder: (context, state) {
                     if (state is AuthErrorState) {
@@ -224,47 +240,59 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2.4,
-                            // height: MediaQuery.of(context).size.width / 7,
-                            decoration: BoxDecoration(
-                                // color: Colors.deepOrangeAccent,
-                                border: Border.all(
-                                    color: Colors.deepOrangeAccent
-                                        .withOpacity(0.5)),
-                                // gradient: LinearGradient(colors: [
-                                //   Colors.white,
-                                //   Colors.indigo.shade400
-                                // ]),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: InkWell(
-                              highlightColor:
-                                  Colors.deepOrangeAccent.withOpacity(1),
-                              // splashColor: Colors.deepOrangeAccent.shade700,
-                              splashColor: Colors.deepOrangeAccent,
-                              onTap: () {
-                                UserCredentialModel credentialModel =
-                                    UserCredentialModel(
-                                        email:
-                                            _loginScreenUsernameController.text,
-                                        password: _loginScreenPasswordController
-                                            .text);
-                                bloc.add(AuthSignInEmailPasswordEvent(
-                                    credentialModel));
-                              },
-                              // customBorder: Border.all(color: Colors.amber),
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Login",
-                                  style: GoogleFonts.mavenPro(
-                                      color: Colors.white,
-                                      // fontWeight: FontWeight.w400,
-                                      fontSize: 23),
+                          BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, state) {
+                              if (state is AuthLoadingState) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              return Container(
+                                width: MediaQuery.of(context).size.width / 2.4,
+                                // height: MediaQuery.of(context).size.width / 7,
+                                decoration: BoxDecoration(
+                                    // color: Colors.deepOrangeAccent,
+                                    border: Border.all(
+                                        color: Colors.deepOrangeAccent
+                                            .withOpacity(0.5)),
+                                    // gradient: LinearGradient(colors: [
+                                    //   Colors.white,
+                                    //   Colors.indigo.shade400
+                                    // ]),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: InkWell(
+                                  highlightColor:
+                                      Colors.deepOrangeAccent.withOpacity(1),
+                                  // splashColor: Colors.deepOrangeAccent.shade700,
+                                  splashColor: Colors.deepOrangeAccent,
+                                  onTap: () {
+                                    UserCredentialModel credentialModel =
+                                        UserCredentialModel(
+                                            email:
+                                                _loginScreenUsernameController
+                                                    .text,
+                                            password:
+                                                _loginScreenPasswordController
+                                                    .text);
+                                    bloc.add(AuthSignInEmailPasswordEvent(
+                                        credentialModel));
+                                  },
+                                  // customBorder: Border.all(color: Colors.amber),
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Login",
+                                      style: GoogleFonts.mavenPro(
+                                          color: Colors.white,
+                                          // fontWeight: FontWeight.w400,
+                                          fontSize: 23),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
                         ],
                       ),
