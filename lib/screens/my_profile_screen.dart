@@ -58,309 +58,305 @@ class MyProfileScreenState extends State<MyProfileScreen>
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: BlocConsumer<ProfileBloc, ProfileState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              try {
-                if (state is ProfileLoadingState) {
-                  return Center(child: loadingWidget());
-                }
-                // return Container();
-              } catch (e) {
-                return Text("Please try again!");
+        child: BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            try {
+              if (state is ProfileLoadingState) {
+                return Center(child: loadingWidget());
               }
-              return BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoadedState) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          height: size.height / 13,
-                          // color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Profile",
-                                  style: TextStyle(
-                                      fontSize: 30, color: Colors.blue),
-                                ),
-                                IconButton(
-                                    onPressed: () async {
-                                      bloc.add(AuthSignOutEvent());
-                                    },
-                                    icon: Icon(
-                                      Icons.output_sharp,
-                                      size: 25,
-                                    )),
-                              ],
-                            ),
+              // return Container();
+            } catch (e) {
+              return Text("Please try again!");
+            }
+            return BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, state) {
+                if (state is ProfileLoadedState) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        height: size.height / 13,
+                        // color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Profile",
+                                style:
+                                    TextStyle(fontSize: 30, color: Colors.blue),
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    bloc.add(AuthSignOutEvent());
+                                  },
+                                  icon: Icon(
+                                    Icons.output_sharp,
+                                    size: 25,
+                                  )),
+                            ],
                           ),
                         ),
-                        Container(
-                          // decoration: BoxDecoration(
-                          //     border:
-                          //         Border.all(color: Colors.deepOrangeAccent)),
-                          // padding: EdgeInsets.all(size.width / ),
-                          width: size.width,
-                          // height: size.height / 6,
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                SizedBox(
-                                  width: 2,
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Stack(
-                                          alignment: Alignment.bottomRight,
-                                          children: [
-                                            Container(
-                                              child: CircleAvatar(
-                                                  radius: 40,
-                                                  // maxRadius: 38,
-                                                  backgroundColor:
-                                                      Colors.deepOrangeAccent,
-                                                  child: CircleAvatar(
-                                                    radius: 38,
-                                                    backgroundImage:
-                                                        NetworkImage(state
-                                                            .userProfileDetailsModel!
-                                                            .photoUrl
-                                                            .toString()),
-                                                  )),
+                      ),
+                      Container(
+                        // decoration: BoxDecoration(
+                        //     border:
+                        //         Border.all(color: Colors.deepOrangeAccent)),
+                        // padding: EdgeInsets.all(size.width / ),
+                        width: size.width,
+                        // height: size.height / 6,
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Container(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Stack(
+                                        alignment: Alignment.bottomRight,
+                                        children: [
+                                          Container(
+                                            child: CircleAvatar(
+                                                radius: 40,
+                                                // maxRadius: 38,
+                                                backgroundColor:
+                                                    Colors.deepOrangeAccent,
+                                                child: CircleAvatar(
+                                                  radius: 38,
+                                                  backgroundImage: NetworkImage(
+                                                      state
+                                                          .userProfileDetailsModel!
+                                                          .photoUrl
+                                                          .toString()),
+                                                )),
+                                          ),
+                                          (state.userProfileDetailsModel!
+                                                      .isMentor ==
+                                                  true)
+                                              ? Icon(
+                                                  Icons.work_outlined,
+                                                  color: Colors
+                                                      .amberAccent.shade200,
+                                                  size: 20,
+                                                )
+                                              : Container()
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 0),
+                                        child: CupertinoButton(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Edit Profile",
+                                                  style:
+                                                      TextStyle(fontSize: 13),
+                                                ),
+                                                SizedBox(width: 5),
+                                                Icon(
+                                                  Icons.edit,
+                                                  size: 15,
+                                                )
+                                              ],
                                             ),
-                                            (state.userProfileDetailsModel!
-                                                        .isMentor ==
-                                                    true)
-                                                ? Icon(
-                                                    Icons.work_outlined,
-                                                    color: Colors
-                                                        .amberAccent.shade200,
-                                                    size: 20,
-                                                  )
-                                                : Container()
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 0),
-                                          child: CupertinoButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Edit Profile",
-                                                    style:
-                                                        TextStyle(fontSize: 13),
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Icon(
-                                                    Icons.edit,
-                                                    size: 15,
-                                                  )
-                                                ],
-                                              ),
-                                              onPressed: () {}),
-                                        )
-                                      ],
-                                    ),
+                                            onPressed: () {}),
+                                      )
+                                    ],
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Column(
-                                      // crossAxisAlignment:
-                                      //     CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          // height: 60,
-                                          width: size.width / 1.5,
-                                          child: Text(
-                                            state.userProfileDetailsModel!
-                                                .displayName
-                                                .toString(),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.visible,
-                                            // softWrap: true,
-                                            style: TextStyle(
-                                                color: Colors.grey.shade300,
-                                                fontSize: 22),
-                                          ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Container(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Column(
+                                    // crossAxisAlignment:
+                                    //     CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        // height: 60,
+                                        width: size.width / 1.5,
+                                        child: Text(
+                                          state.userProfileDetailsModel!
+                                              .displayName
+                                              .toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.visible,
+                                          // softWrap: true,
+                                          style: TextStyle(
+                                              color: Colors.grey.shade300,
+                                              fontSize: 22),
                                         ),
-                                        Container(
-                                          // height: 60,
-                                          width: size.width / 1.5,
-                                          child: Text(
-                                            state.userProfileDetailsModel!
-                                                .fullName
-                                                .toString(),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.visible,
-                                            // softWrap: true,
-                                            style: TextStyle(
-                                                color: Colors.grey.shade400,
-                                                fontSize: 17),
-                                          ),
+                                      ),
+                                      Container(
+                                        // height: 60,
+                                        width: size.width / 1.5,
+                                        child: Text(
+                                          state
+                                              .userProfileDetailsModel!.fullName
+                                              .toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.visible,
+                                          // softWrap: true,
+                                          style: TextStyle(
+                                              color: Colors.grey.shade400,
+                                              fontSize: 17),
                                         ),
-                                        Container(
-                                          // height: 60,
-                                          width: size.width / 1.5,
-                                          child: Text(
-                                            state.userProfileDetailsModel!
-                                                .headline
-                                                .toString(),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.visible,
-                                            // softWrap: true,
-                                            style: TextStyle(
-                                                color: Colors.grey.shade400,
-                                                fontSize: 17),
-                                          ),
+                                      ),
+                                      Container(
+                                        // height: 60,
+                                        width: size.width / 1.5,
+                                        child: Text(
+                                          state
+                                              .userProfileDetailsModel!.headline
+                                              .toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.visible,
+                                          // softWrap: true,
+                                          style: TextStyle(
+                                              color: Colors.grey.shade400,
+                                              fontSize: 17),
                                         ),
-                                        Container(
-                                          // height: 60,
-                                          width: size.width / 1.5,
-                                          child: Text(
-                                            state.userProfileDetailsModel!.state
-                                                    .toString() +
-                                                "," +
-                                                state.userProfileDetailsModel!
-                                                    .country
-                                                    .toString(),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.visible,
-                                            // softWrap: true,
-                                            style: TextStyle(
-                                                color: Colors.grey.shade400,
-                                                fontSize: 17),
-                                          ),
+                                      ),
+                                      Container(
+                                        // height: 60,
+                                        width: size.width / 1.5,
+                                        child: Text(
+                                          state.userProfileDetailsModel!.state
+                                                  .toString() +
+                                              "," +
+                                              state.userProfileDetailsModel!
+                                                  .country
+                                                  .toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.visible,
+                                          // softWrap: true,
+                                          style: TextStyle(
+                                              color: Colors.grey.shade400,
+                                              fontSize: 17),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                        TabBar(
-                            // isScrollable: false,
-                            controller: tabController,
-                            tabs: [
-                              Tab(
-                                text: "About",
-                              ),
-                              Tab(
-                                text: "Posts",
-                              ),
-                              Tab(
-                                text: "Settings",
-                              )
-                            ]),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            child: TabBarView(
+                      ),
+                      TabBar(
+                          // isScrollable: false,
                           controller: tabController,
-                          children: [
-                            Center(
-                                child: Column(
-                              children: [
-                                Container(
-                                  height: 120,
-                                  width: 10,
-                                  color: Colors.white,
-                                ),
-                                Container(
-                                  height: 100,
-                                  width: 10,
-                                  color: Colors.orange,
-                                ),
-                                Container(
-                                  height: 400,
-                                  width: 10,
-                                  color: Colors.green,
-                                )
-                              ],
-                            )),
-                            Center(
-                              child: Text("Posts"),
+                          tabs: [
+                            Tab(
+                              text: "About",
                             ),
-                            Center(
-                              child: Text("Settings"),
+                            Tab(
+                              text: "Posts",
+                            ),
+                            Tab(
+                              text: "Settings",
                             )
-                          ],
-                        ))
-                        // DefaultTabController(
-                        //   length: 3,
-                        //   child: Column(
-                        //     children: [
-                        //       TabBar(tabs: [
-                        //         Tab(
-                        //           text: "About",
-                        //         ),
-                        //         Tab(
-                        //           text: "Posts",
-                        //         ),
-                        //         Tab(
-                        //           text: "Setings",
-                        //         )
-                        //       ]),
-                        //       SizedBox(
-                        //         height: 20,
-                        //       ),
-                        //       Expanded(
-                        //         child: Container(
-                        //           height: size.height,
-                        //           child: TabBarView(
-                        //             // controller: tabController,
-                        //             children: [
-                        //               Center(child: Text('Content of Tab 1')),
-                        //               Center(child: Text('Content of Tab 2')),
-                        //               Center(child: Text('Content of Tab 3')),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ],
-                    );
-                  }
-                  return Container();
-                },
-              );
-            },
-          ),
+                          ]),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                          child: TabBarView(
+                        controller: tabController,
+                        children: [
+                          Center(
+                              child: Column(
+                            children: [
+                              Container(
+                                height: 120,
+                                width: 10,
+                                color: Colors.white,
+                              ),
+                              Container(
+                                height: 100,
+                                width: 10,
+                                color: Colors.orange,
+                              ),
+                              Container(
+                                height: 400,
+                                width: 10,
+                                color: Colors.green,
+                              )
+                            ],
+                          )),
+                          Center(
+                            child: Text("Posts"),
+                          ),
+                          Center(
+                            child: Text("Settings"),
+                          )
+                        ],
+                      ))
+                      // DefaultTabController(
+                      //   length: 3,
+                      //   child: Column(
+                      //     children: [
+                      //       TabBar(tabs: [
+                      //         Tab(
+                      //           text: "About",
+                      //         ),
+                      //         Tab(
+                      //           text: "Posts",
+                      //         ),
+                      //         Tab(
+                      //           text: "Setings",
+                      //         )
+                      //       ]),
+                      //       SizedBox(
+                      //         height: 20,
+                      //       ),
+                      //       Expanded(
+                      //         child: Container(
+                      //           height: size.height,
+                      //           child: TabBarView(
+                      //             // controller: tabController,
+                      //             children: [
+                      //               Center(child: Text('Content of Tab 1')),
+                      //               Center(child: Text('Content of Tab 2')),
+                      //               Center(child: Text('Content of Tab 3')),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  );
+                }
+                return Container();
+              },
+            );
+          },
         ),
       ),
     );
