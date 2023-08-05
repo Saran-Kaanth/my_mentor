@@ -23,12 +23,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             userProfileDetailsModel: userProfileDetailsModel));
         print("ProfileLoaded success");
       } catch (e) {
-        throw Exception(e.toString());
+        emit(ProfileErrorState("Unable to fetch data"));
       }
-    });
-
-    on<ProfileWidgetChangeEvent>((event, emit) {
-      emit(ProfileWidgedChangedState(event.index));
     });
   }
 }

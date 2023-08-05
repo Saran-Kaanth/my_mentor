@@ -13,7 +13,10 @@ class ProfileLoadedState extends ProfileState {
 
 class ProfileUpdatedState extends ProfileState {}
 
-class ProfileErrorState extends ProfileState {}
+class ProfileErrorState extends ProfileState {
+  String errorMessage;
+  ProfileErrorState(this.errorMessage);
+}
 
 class ProfileWidgedChangedState extends ProfileState {
   int index;

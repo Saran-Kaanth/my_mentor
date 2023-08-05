@@ -14,5 +14,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       print("post loading state");
       emit(PostLoadedState());
     });
+
+    
+
   }
 }

@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
@@ -24,25 +25,14 @@ class MyProfileScreenState extends State<MyProfileScreen>
   User user = FirebaseAuth.instance.currentUser!;
   final DatabaseReference dbRef =
       FirebaseDatabase.instance.ref("profileDetails");
-  late TabController tabController;
-  // late UserProfileDetailsModel profileData;
-  // List<Widget> indexedWidgets = [profileWidget()];
-  // List<Widget> indexedWidgets = [profileWidget(), postWidget()];
-  // List<Container> indexedWidgets = [profileContainer(), postContainer()];
 
-  int selectedIndex = 0;
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
-    print("screen started");
-    // tabController = TabController(vsync: this, length: 3);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     // tabController.dispose();
     super.dispose();
   }
@@ -268,17 +258,24 @@ class MyProfileScreenState extends State<MyProfileScreen>
                         ),
                       ),
                       TabBar(
-                          // isScrollable: false,
+                          // isScrollable: true,
+                          labelStyle: GoogleFonts.mavenPro(),
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Colors.deepOrangeAccent[100],
                           controller: tabController,
                           tabs: [
                             Tab(
-                              text: "About",
+                              text: "Info",
+                              icon: Icon(Icons.info),
                             ),
                             Tab(
                               text: "Posts",
+                              icon: Icon(Icons.image),
                             ),
                             Tab(
                               text: "Settings",
+                              icon: Icon(Icons.settings),
                             )
                           ]),
                       SizedBox(
@@ -288,68 +285,11 @@ class MyProfileScreenState extends State<MyProfileScreen>
                           child: TabBarView(
                         controller: tabController,
                         children: [
-                          Center(
-                              child: Column(
-                            children: [
-                              Container(
-                                height: 120,
-                                width: 10,
-                                color: Colors.white,
-                              ),
-                              Container(
-                                height: 100,
-                                width: 10,
-                                color: Colors.orange,
-                              ),
-                              Container(
-                                height: 400,
-                                width: 10,
-                                color: Colors.green,
-                              )
-                            ],
-                          )),
-                          Center(
-                            child: Text("Posts"),
-                          ),
-                          Center(
-                            child: Text("Settings"),
-                          )
+                          profileWidget(size),
+                          postWidget(),
+                          settingsWidget()
                         ],
                       ))
-                      // DefaultTabController(
-                      //   length: 3,
-                      //   child: Column(
-                      //     children: [
-                      //       TabBar(tabs: [
-                      //         Tab(
-                      //           text: "About",
-                      //         ),
-                      //         Tab(
-                      //           text: "Posts",
-                      //         ),
-                      //         Tab(
-                      //           text: "Setings",
-                      //         )
-                      //       ]),
-                      //       SizedBox(
-                      //         height: 20,
-                      //       ),
-                      //       Expanded(
-                      //         child: Container(
-                      //           height: size.height,
-                      //           child: TabBarView(
-                      //             // controller: tabController,
-                      //             children: [
-                      //               Center(child: Text('Content of Tab 1')),
-                      //               Center(child: Text('Content of Tab 2')),
-                      //               Center(child: Text('Content of Tab 3')),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   );
                 }
@@ -362,137 +302,236 @@ class MyProfileScreenState extends State<MyProfileScreen>
     );
   }
 
-  Container profileContainer() {
-    return Container(
-        child: Text(
-      "Profile",
-      style: TextStyle(color: Colors.white),
-    ));
-  }
-
-  Container postContainer() {
-    return Container(
-        child: Text(
-      "Post",
-      style: TextStyle(color: Colors.white),
-    ));
-  }
-
-  Widget profileWidget() {
-    return Center(
-      child: Text("Hello Profile"),
-    );
+  Widget profileWidget(Size size) {
+    try {
+      return SingleChildScrollView(
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoadedState) {
+              return Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: size.width / 18,
+                    horizontal: size.width / 25,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      textSubHeadWidget("Date of Birth"),
+                      spaceBox(5),
+                      textValueWidget(state.userProfileDetailsModel!.dob == null
+                          ? "NA"
+                          : state.userProfileDetailsModel!.dob.toString()),
+                      spaceBox(15),
+                      textSubHeadWidget("Email"),
+                      spaceBox(5),
+                      textValueWidget(state.userProfileDetailsModel!.email ==
+                              null
+                          ? "NA"
+                          : state.userProfileDetailsModel!.email.toString()),
+                      spaceBox(15),
+                      textSubHeadWidget("Contact"),
+                      spaceBox(5),
+                      textValueWidget(state.userProfileDetailsModel!.phone ==
+                              null
+                          ? "NA"
+                          : "+91" +
+                              state.userProfileDetailsModel!.phone.toString()),
+                      spaceBox(25),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                state.userProfileDetailsModel!.connections
+                                    .toString(),
+                                style: TextStyle(
+                                    color: Colors.deepOrangeAccent,
+                                    fontSize: 40),
+                              ),
+                              Text(
+                                "Connections",
+                                style:
+                                    TextStyle(color: Colors.blue, fontSize: 20),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ));
+              // return Text(
+              //   "Date of Birth",
+              //   style: TextStyle(color: Colors.white, fontSize: 18),
+              // );
+            } else if (state is ProfileLoadingState) {
+              return loadingWidget();
+            } else if (state is ProfileErrorState) {
+              return Center(
+                child: Text(
+                  state.errorMessage.toString(),
+                  style: TextStyle(fontSize: 20),
+                ),
+              );
+            }
+            return Container();
+          },
+        ),
+      );
+    } catch (e) {
+      return Container(child: errorWidget());
+    }
   }
 
   Widget postWidget() {
+    try {
+      return SingleChildScrollView(
+        child: Stack(
+          // alignment: Alignment(5, 5),
+          clipBehavior: Clip.antiAlias,
+          // fit: StackFit.passthrough,
+          children: [
+            Container(
+              height: 500,
+              width: 100,
+              color: Colors.blueGrey,
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.add_photo_alternate_outlined),
+              iconSize: 40,
+            )
+          ],
+        ),
+      );
+    } catch (e) {
+      return Container(
+        child: errorWidget(),
+      );
+      // errorWidget();
+    }
+  }
+
+  Widget settingsWidget() {
     return Center(
-      child: Text("Hello Post"),
+      child: Text("Hello Settings"),
     );
-    // return BlocBuilder<PostBloc, PostState>(
-    //   builder: (context, state) {
-    //     if (state is PostLoadedState) {
-    //       return Center(
-    //           child: Text(
-    //         "Post Page",
-    //         style: TextStyle(color: Colors.white),
-    //       ));
-    //     }
-    //     return Container();
-    //   },
-    // );
   }
 
   Widget loadingWidget() {
-    return Container(
-      child: Center(
-        child: CircularProgressIndicator(
-          color: Colors.white,
-        ),
+    return Center(
+      child: CircularProgressIndicator(
+        color: Colors.white,
       ),
     );
   }
 }
 
+Widget errorWidget() {
+  return Center(
+    child: Text("Please try again"),
+  );
+}
 
+Text textSubHeadWidget(String textValue) {
+  return Text(
+    textValue,
+    style: TextStyle(color: Colors.blue.shade400, fontSize: 18),
+  );
+}
+
+Text textValueWidget(String textValue) {
+  return Text(
+    textValue,
+    style: TextStyle(color: Colors.grey.shade300, fontSize: 15),
+  );
+}
+
+SizedBox spaceBox(double height) {
+  return SizedBox(
+    height: height,
+  );
+}
 // ---------------------
- // Container(
-                          //   width: size.width,
-                          //   height: 50,
-                          //   color: Colors.black,
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          //     children: [
-                          //       InkWell(
-                          //         onTap: () => setState(() {
-                          //           selectedIndex = 0;
-                          //         }),
-                          //         child: Text(
-                          //           "About",
-                          //           style: TextStyle(color: Colors.white),
-                          //         ),
-                          //       ),
-                          //       InkWell(
-                          //         onTap: () => setState(() {
-                          //           selectedIndex = 1;
-                          //         }),
-                          //         child: Text(
-                          //           "Posts",
-                          //           style: TextStyle(color: Colors.white),
-                          //         ),
-                          //       ),
-                          //       InkWell(
-                          //         onTap: () => setState(() {
-                          //           selectedIndex = 2;
-                          //         }),
-                          //         child: Text(
-                          //           "Settings",
-                          //           style: TextStyle(color: Colors.white),
-                          //         ),
-                          //       )
-                          //     ],
-                          //   ),
-                          // ),
-                          // Container(
-                          //   child: SwitchTab(
-                          //       onValueChanged: (value) {
-                          //         print(value);
-                          //         setState(() {
-                          //           selectedIndex = value;
-                          //         });
-                          //       },
-                          //       text: ["About", "Posts"]),
-                          // ),
-                          // Container(
-                          //   color: Colors.amber,
-                          //   child: GNav(
-                          //       padding: EdgeInsets.all(size.width / 20),
-                          //       gap: 4,
-                          //       backgroundColor: Colors.grey.shade900,
-                          //       activeColor: Colors.white,
-                          //       color: Colors.grey.shade700,
-                          //       onTabChange: (value) {
-                          //         setState(() {
-                          //           selectedIndex = value;
-                          //         });
-                          //       },
-                          //       tabs: [
-                          //         GButton(
-                          //           icon: Icons.info_outline,
-                          //           text: "About",
-                          //         ),
-                          //         GButton(
-                          //           icon: Icons.image_outlined,
-                          //           text: "Posts",
-                          //           onPressed: () {
-                          //             postBloc.add(PostLoadingEvent());
-                          //           },
-                          //         ),
-                          //         GButton(
-                          //           icon: Icons.settings,
-                          //           text: "Settings",
-                          //         ),
-                          //       ]),
-                          // ),
-                          // Container(
-                          //   child: indexedWidgets.elementAt(selectedIndex),
-                          // )
+// Container(
+//   width: size.width,
+//   height: 50,
+//   color: Colors.black,
+//   child: Row(
+//     mainAxisAlignment: MainAxisAlignment.spaceAround,
+//     children: [
+//       InkWell(
+//         onTap: () => setState(() {
+//           selectedIndex = 0;
+//         }),
+//         child: Text(
+//           "About",
+//           style: TextStyle(color: Colors.white),
+//         ),
+//       ),
+//       InkWell(
+//         onTap: () => setState(() {
+//           selectedIndex = 1;
+//         }),
+//         child: Text(
+//           "Posts",
+//           style: TextStyle(color: Colors.white),
+//         ),
+//       ),
+//       InkWell(
+//         onTap: () => setState(() {
+//           selectedIndex = 2;
+//         }),
+//         child: Text(
+//           "Settings",
+//           style: TextStyle(color: Colors.white),
+//         ),
+//       )
+//     ],
+//   ),
+// ),
+// Container(
+//   child: SwitchTab(
+//       onValueChanged: (value) {
+//         print(value);
+//         setState(() {
+//           selectedIndex = value;
+//         });
+//       },
+//       text: ["About", "Posts"]),
+// ),
+// Container(
+//   color: Colors.amber,
+//   child: GNav(
+//       padding: EdgeInsets.all(size.width / 20),
+//       gap: 4,
+//       backgroundColor: Colors.grey.shade900,
+//       activeColor: Colors.white,
+//       color: Colors.grey.shade700,
+//       onTabChange: (value) {
+//         setState(() {
+//           selectedIndex = value;
+//         });
+//       },
+//       tabs: [
+//         GButton(
+//           icon: Icons.info_outline,
+//           text: "About",
+//         ),
+//         GButton(
+//           icon: Icons.image_outlined,
+//           text: "Posts",
+//           onPressed: () {
+//             postBloc.add(PostLoadingEvent());
+//           },
+//         ),
+//         GButton(
+//           icon: Icons.settings,
+//           text: "Settings",
+//         ),
+//       ]),
+// ),
+// Container(
+//   child: indexedWidgets.elementAt(selectedIndex),
+// )
