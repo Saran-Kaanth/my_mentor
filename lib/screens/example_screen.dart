@@ -3,7 +3,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:path_provider/path_provider.dart';
-// import 'package:permission_handler/permission_handler.dart';
 // import 'package:image_cropper/image_cropper.dart';
 // import 'package:image_gallery_saver/image_gallery_saver.dart';
 
@@ -24,10 +23,10 @@
 //   late File imagefile; 
   
 //   Future<File?> _getImage(ImageSource source) async {
-//     final bool isGranted = await _requestPermission();
-//     if (!isGranted) {
-//       return null;
-//     }
+//     // final bool isGranted = await _requestPermission();
+//     // if (!isGranted) {
+//     //   return null;
+//     // }
 //     final ImagePicker _picker =   ImagePicker();
 //     final XFile? image = await _picker.pickImage(source: source);
 //     if (image != null) {
@@ -36,39 +35,9 @@
 //     return null;
 //   }
 
-//   Future<bool> _requestPermission() async {
-//     Map<Permission, PermissionStatus> result =
-//         await [Permission.storage, Permission.camera].request();
-//     if (result[Permission.storage] == PermissionStatus.granted &&
-//         result[Permission.camera] == PermissionStatus.granted) {
-//       return true;
-//     }
-//     return false;
-// }
-
 //   _cropImage() async {
-//     // CroppedFile croppedfile = await ImageCropper.cropImage(
-//     //   sourcePath: imagepath,
-//     //   aspectRatioPresets: [
-//     //     CropAspectRatioPreset.square,
-//     //     CropAspectRatioPreset.ratio3x2,
-//     //     CropAspectRatioPreset.original,
-//     //     CropAspectRatioPreset.ratio4x3,
-//     //     CropAspectRatioPreset.ratio16x9
-//     //   ],
-//     //   androidUiSettings: AndroidUiSettings(
-//     //     toolbarTitle: 'Image Cropper',
-//     //     toolbarColor: Colors.deepPurpleAccent,
-//     //     toolbarWidgetColor: Colors.white,
-//     //     initAspectRatio: CropAspectRatioPreset.original,
-//     //     lockAspectRatio: false,
-//     //   ),
-//     //   iosUiSettings: IOSUiSettings(
-//     //     minimumAspectRatio: 1.0,
-//     //   )
-//     // );
-//     CroppedFile? croppedFile = await ImageCropper().cropImage(
-//       sourcePath:imagepath,
+//     File? croppedfile = (await ImageCropper.cropImage(
+//       sourcePath: imagepath,
 //       aspectRatioPresets: [
 //         CropAspectRatioPreset.square,
 //         CropAspectRatioPreset.ratio3x2,
@@ -76,31 +45,18 @@
 //         CropAspectRatioPreset.ratio4x3,
 //         CropAspectRatioPreset.ratio16x9
 //       ],
-//       uiSettings: [
-//         AndroidUiSettings(
-//             toolbarTitle: 'Cropper',
-//             toolbarColor: Colors.deepOrange,
-//             toolbarWidgetColor: Colors.white,
-//             initAspectRatio: CropAspectRatioPreset.original,
-//             lockAspectRatio: false),
-//         IOSUiSettings(
-//           title: 'Cropper',
-//         ),
-//         WebUiSettings(
-//           context: context,
-//         ),
-//       ],
-//     );
+      
+//     )) as File?;
 
-//     if (croppedFile != null) {
-//       imagefile = croppedFile;
-//       setState(() {});
+//     if (croppedfile != null) {
+//       imagefile = croppedfile;
+//       setState(() { });
 //     } else{
 //       print("Image is not cropped.");
 //     }
 //   }
 
-//   _saveImage() async {
+//   _saveImage() {
 //     Uint8List bytes = await imagefile.readAsBytes();
 //     var result = await ImageGallerySaver.saveImage(
 //       bytes,

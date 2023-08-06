@@ -53,8 +53,8 @@ dependencies:
   google_nav_bar: ^5.0.6
   switch_tab:
   image_cropper: 
-  path_provider:  
-  image_gallery_saver: 
+  # path_provider:  
+  # image_gallery_saver: 
 
 dev_dependencies:
   flutter_test:

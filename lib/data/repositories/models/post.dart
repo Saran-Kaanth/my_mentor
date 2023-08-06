@@ -1,10 +1,10 @@
 class Post {
-  final String postId;
-  final String postedBy;
-  final String authorId;
-  final String postDate;
-  final String postUrl;
-  final String postDescription;
+  String? postId;
+  String? postedBy;
+  String? authorId;
+  String? postDate;
+  String? postUrl;
+  String? postDescription;
   int? likes;
 
   Post(this.postUrl, this.postId, this.postedBy, this.authorId, this.postDate,

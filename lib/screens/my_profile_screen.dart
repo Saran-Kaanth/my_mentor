@@ -4,13 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
-import 'package:my_mentor/data/repositories/models/user.dart';
-import 'package:my_mentor/data/repositories/profile_repository.dart';
-import 'package:switch_tab/switch_tab.dart';
+import 'package:my_mentor/screens/post_add_screen.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -25,6 +24,7 @@ class MyProfileScreenState extends State<MyProfileScreen>
   User user = FirebaseAuth.instance.currentUser!;
   final DatabaseReference dbRef =
       FirebaseDatabase.instance.ref("profileDetails");
+  CroppedFile? imageFile;
 
   @override
   void initState() {
@@ -35,6 +35,23 @@ class MyProfileScreenState extends State<MyProfileScreen>
   void dispose() {
     // tabController.dispose();
     super.dispose();
+  }
+
+  void chooseImage(ImageSource source) async {
+    // final ImagePicker imagePicker=ImagePicker();
+    XFile? pickedFile = await ImagePicker()
+        .pickImage(source: source, maxHeight: 1080, maxWidth: 1080);
+    cropImage(pickedFile!.path);
+  }
+
+  void cropImage(filePath) async {
+    CroppedFile? croppedImage = await ImageCropper()
+        .cropImage(sourcePath: filePath, maxHeight: 1080, maxWidth: 1080);
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = croppedImage;
+      });
+    }
   }
 
   @override
@@ -169,7 +186,17 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                                 )
                                               ],
                                             ),
-                                            onPressed: () {}),
+                                            onPressed: () async {
+                                              await dbRef
+                                                  .orderByChild("displayName")
+                                                  .equalTo("Saran ")
+                                                  .get()
+                                                  .then((value) =>
+                                                      print(value.value))
+                                                  .onError((error,
+                                                          stackTrace) =>
+                                                      print(error.toString()));
+                                            }),
                                       )
                                     ],
                                   ),
@@ -286,7 +313,7 @@ class MyProfileScreenState extends State<MyProfileScreen>
                         controller: tabController,
                         children: [
                           profileWidget(size),
-                          postWidget(),
+                          postWidget(size),
                           settingsWidget()
                         ],
                       ))
@@ -384,28 +411,60 @@ class MyProfileScreenState extends State<MyProfileScreen>
     }
   }
 
-  Widget postWidget() {
+  Widget postWidget(Size size) {
     try {
       return SingleChildScrollView(
-        child: Stack(
-          // alignment: Alignment(5, 5),
-          clipBehavior: Clip.antiAlias,
-          // fit: StackFit.passthrough,
-          children: [
-            Container(
-              height: 500,
-              width: 100,
-              color: Colors.blueGrey,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.add_photo_alternate_outlined),
-              iconSize: 40,
-            )
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: size.width / 18,
+            horizontal: size.width / 25,
+          ),
+          child: Stack(
+            // alignment: Alignment(5, 5),
+            alignment: Alignment.bottomRight,
+            // clipBehavior: Clip.antiAlias,
+            // fit: StackFit.passthrough,
+            children: [
+              Container(
+                height: 300,
+                width: 100,
+                // color: Colors.blueGrey,
+              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   icon: Icon(Icons.add_photo_alternate_outlined),
+              //   iconSize: 40,
+              // )
+              FloatingActionButton(
+                onPressed: () async {
+                  // chooseImage(ImageSource.gallery);
+                  // Future.delayed(Duration(seconds: 2));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PostAddScreen(),
+                      ));
+                },
+                child: Container(
+                  // height: 50,
+                  // width: 50,
+                  // color: Colors.blue,
+                  // decoration: BoxDecoration(
+                  //     // border: Border.all(color: Colors.deepOrangeAccent),
+                  //     borderRadius: BorderRadius.circular(150)),
+                  child: Icon(
+                    Icons.add,
+                    size: 50,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
     } catch (e) {
+      print("hello");
+      print(e.toString());
       return Container(
         child: errorWidget(),
       );
@@ -453,6 +512,8 @@ SizedBox spaceBox(double height) {
     height: height,
   );
 }
+
+
 // ---------------------
 // Container(
 //   width: size.width,
