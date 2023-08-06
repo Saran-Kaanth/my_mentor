@@ -1,77 +1,183 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'dart:io';
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 
-class ExampleScreen extends StatefulWidget {
-  @override
-  _ExampleScreenState createState() => _ExampleScreenState();
-}
+// void main() {
+//   runApp( MaterialApp(
+//        home: Home()
+//   ));
+// }
 
-class _ExampleScreenState extends State<ExampleScreen>
-    with SingleTickerProviderStateMixin {
-  // Controller for the TabBar
-  late TabController _tabController;
+// class Home extends  StatefulWidget {
+//   @override
+//   State<Home> createState() => _HomeState();
+// }
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the TabController with the number of tabs
-    _tabController = TabController(length: 3, vsync: this);
-  }
+// class _HomeState extends State<Home> {
+//   final ImagePicker imgpicker = ImagePicker();
+//   String imagepath = "";
+//   late File imagefile; 
+  
+//   Future<File?> _getImage(ImageSource source) async {
+//     final bool isGranted = await _requestPermission();
+//     if (!isGranted) {
+//       return null;
+//     }
+//     final ImagePicker _picker =   ImagePicker();
+//     final XFile? image = await _picker.pickImage(source: source);
+//     if (image != null) {
+//       return File(image.path);
+//     }
+//     return null;
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Tab Navigation'),
-        //   centerTitle: true,
-        // ),
-        // TabBar to show the tabs
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 50,
-              width: 50,
-              color: Colors.white,
-            ),
-            TabBar(
-              labelStyle: GoogleFonts.mavenPro(),
-              controller: _tabController,
-              onTap: (value) => print(value),
-              tabs: [
-                Tab(icon: Icon(Icons.home), text: "tab 1"),
-                Tab(text: 'Tab 2'),
-                Tab(text: 'Tab 3'),
-              ],
-            ),
-            // TabBarView to show the content of each tab
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  Center(
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Center(child: Text('Content of Tab 2')),
-                  Center(child: Text('Content of Tab 3')),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+//   Future<bool> _requestPermission() async {
+//     Map<Permission, PermissionStatus> result =
+//         await [Permission.storage, Permission.camera].request();
+//     if (result[Permission.storage] == PermissionStatus.granted &&
+//         result[Permission.camera] == PermissionStatus.granted) {
+//       return true;
+//     }
+//     return false;
+// }
 
-  @override
-  void dispose() {
-    // Dispose the TabController when not needed anymore
-    _tabController.dispose();
-    super.dispose();
-  }
-}
+//   _cropImage() async {
+//     // CroppedFile croppedfile = await ImageCropper.cropImage(
+//     //   sourcePath: imagepath,
+//     //   aspectRatioPresets: [
+//     //     CropAspectRatioPreset.square,
+//     //     CropAspectRatioPreset.ratio3x2,
+//     //     CropAspectRatioPreset.original,
+//     //     CropAspectRatioPreset.ratio4x3,
+//     //     CropAspectRatioPreset.ratio16x9
+//     //   ],
+//     //   androidUiSettings: AndroidUiSettings(
+//     //     toolbarTitle: 'Image Cropper',
+//     //     toolbarColor: Colors.deepPurpleAccent,
+//     //     toolbarWidgetColor: Colors.white,
+//     //     initAspectRatio: CropAspectRatioPreset.original,
+//     //     lockAspectRatio: false,
+//     //   ),
+//     //   iosUiSettings: IOSUiSettings(
+//     //     minimumAspectRatio: 1.0,
+//     //   )
+//     // );
+//     CroppedFile? croppedFile = await ImageCropper().cropImage(
+//       sourcePath:imagepath,
+//       aspectRatioPresets: [
+//         CropAspectRatioPreset.square,
+//         CropAspectRatioPreset.ratio3x2,
+//         CropAspectRatioPreset.original,
+//         CropAspectRatioPreset.ratio4x3,
+//         CropAspectRatioPreset.ratio16x9
+//       ],
+//       uiSettings: [
+//         AndroidUiSettings(
+//             toolbarTitle: 'Cropper',
+//             toolbarColor: Colors.deepOrange,
+//             toolbarWidgetColor: Colors.white,
+//             initAspectRatio: CropAspectRatioPreset.original,
+//             lockAspectRatio: false),
+//         IOSUiSettings(
+//           title: 'Cropper',
+//         ),
+//         WebUiSettings(
+//           context: context,
+//         ),
+//       ],
+//     );
+
+//     if (croppedFile != null) {
+//       imagefile = croppedFile;
+//       setState(() {});
+//     } else{
+//       print("Image is not cropped.");
+//     }
+//   }
+
+//   _saveImage() async {
+//     Uint8List bytes = await imagefile.readAsBytes();
+//     var result = await ImageGallerySaver.saveImage(
+//       bytes,
+//       quality: 80,
+//       name: "my_mage.jpg"
+//     );
+//     if(result["isSuccess"] == true){
+//       print("Image saved successfully.");
+//     } else{
+//       print(result["errorMessage"]);
+//     }
+//   }
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       resizeToAvoidBottomInset: false,
+//       appBar: AppBar(
+//         title: Text("Open Image, Crop and Save"),
+//         backgroundColor: Colors.deepPurpleAccent,
+//       ),
+//       body: Container(
+//         margin: EdgeInsets.only(top:30),
+//         alignment: Alignment.center,
+//         padding: EdgeInsets.all(20),
+//         child: Column(
+//           children: [
+//             imagepath != "" ? Image.file(imagefile) :
+//               Container( 
+//                 child: Text("No Image selected."),
+//               ),
+            
+//             Row( 
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 //open button ----------------
+//                 ElevatedButton(
+//                   onPressed: (){
+//                       _getImage(ImageSource.gallery);
+//                   }, 
+//                   child: Text("Open Image")
+//                 ),
+
+//                 //crop button --------------------
+//                 imagepath != "" ? ElevatedButton(
+//                   style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+//                   onPressed: (){
+//                       _cropImage();
+//                   }, 
+//                   child: Text("Crop Image")
+//                 ): Container(),
+
+//                 //save button -------------------
+//                 imagepath != "" ? ElevatedButton(
+//                 onPressed: () async {
+//                   Uint8List bytes = await imagefile.readAsBytes();
+//                   var result = await ImageGallerySaver.saveImage(
+//                     bytes,
+//                     quality: 60,
+//                     name: "new_mage.jpg"
+//                   );
+//                   print(result);
+//                   if(result["isSuccess"] == true){
+//                     print("Image saved successfully.");
+//                   }else{
+//                     print(result["errorMessage"]);
+//                   }
+//                 }, 
+//                 child: Text("Save Image")
+//                 ): Container(),
+
+//               ],
+
+//             )
+//           ],
+//         ),
+//       )
+//     );
+//   }
+// }

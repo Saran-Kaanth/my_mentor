@@ -36,24 +36,6 @@ class UserProfileDetailsModel {
       this.isMentor,
       this.emailVerified);
 
-// UserProfileDetailsModel.fromDocSnapshot(Map<String, dynamic> userProfileData)
-//       : userId = userProfileData["userId"],
-//         email = userProfileData["email"],
-//         displayName = userProfileData["displayName"],
-//         fullName = userProfileData["fullName"],
-//         dob = userProfileData["dob"],
-//         photoUrl = userProfileData["photoUrl"],
-//         occupation = userProfileData["occupation"],
-//         headline = userProfileData["headline"],
-//         city = userProfileData["city"],
-//         state = userProfileData["state"],
-//         country = userProfileData["country"],
-//         phone = userProfileData["phone"],
-//         connectionList = userProfileData["connectionList"],
-//         connections = userProfileData["connections"],
-//         skills = userProfileData["skills"],
-//         isMentor = userProfileData["isMentor"],
-//         emailVerified = userProfileData["emailVerified"];
   UserProfileDetailsModel.fromMap(Map<dynamic, dynamic> userProfileData)
       : userId = userProfileData["userId"],
         email = userProfileData["email"],
@@ -98,21 +80,21 @@ class UserProfileDetailsModel {
   // id=userProfileData["userId"],
 }
 
-class Book {
-  final int? id;
-  final String? title;
-  int? year;
-  List? sampleList = [];
+// class Book {
+//   final int? id;
+//   final String? title;
+//   int? year;
+//   List? sampleList = [];
 
-  Book({this.id, this.title, this.year, this.sampleList});
+//   Book({this.id, this.title, this.year, this.sampleList});
 
-  Book.fromMap(Map<String, dynamic> data)
-      : id = data['id'],
-        title = data['title'],
-        year = data['year'],
-        sampleList = data["sampleList"];
+//   Book.fromMap(Map<String, dynamic> data)
+//       : id = data['id'],
+//         title = data['title'],
+//         year = data['year'],
+//         sampleList = data["sampleList"];
 
-  Map<String, dynamic> toMap() {
-    return {'id': id, 'title': title, 'year': year, 'list': sampleList};
-  }
-}
+//   Map<String, dynamic> toMap() {
+//     return {'id': id, 'title': title, 'year': year, 'list': sampleList};
+//   }
+// }

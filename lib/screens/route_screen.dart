@@ -20,8 +20,8 @@ class RouteScreenState extends State<RouteScreen> {
 
   List<Widget> widgetOptions = [
     const HomeScreen(),
-    ExampleScreen(),
-    // SearchScreen(),
+    // ExampleScreen(),
+    SearchScreen(),
     MyProfileScreen()
   ];
 
