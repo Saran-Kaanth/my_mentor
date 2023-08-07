@@ -460,8 +460,9 @@ class MyProfileScreenState extends State<MyProfileScreen>
                 builder: (context, state) {
                   if (state is PostLoadedState) {
                     print("state entered");
-                    print(state.myPostsList.length);
-                    if (state.myPostsList.isEmpty) {
+                    print(state.myPostsList?.length);
+                    if (state.myPostsList == null ||
+                        state.myPostsList!.isEmpty) {
                       return Center(
                         child: Text(
                           "No Posts Yet!",
