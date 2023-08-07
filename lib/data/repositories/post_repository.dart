@@ -10,8 +10,8 @@ class PostRepository {
   DatabaseReference dbRef = FirebaseDatabase.instance.ref("postDetails");
   final Reference storageRef = FirebaseStorage.instance.ref();
 
-  Future retrieveMyPostDetail() async {
-    List<Post?> myPostsList = [];
+  Future<List<Post?>>? retrieveMyPostDetail() async {
+    List<Post?>? myPostsList = [];
     try {
       await dbRef
           .orderByChild("authorId")
@@ -32,8 +32,10 @@ class PostRepository {
         return myPostsList;
       });
     } catch (e) {
+      print(e);
       throw Exception(e);
     }
+    return [];
   }
 
   Future<String> storePostImage(String? filePath) async {
