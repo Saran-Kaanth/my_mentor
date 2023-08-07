@@ -10,7 +10,7 @@ class PostRepository {
   DatabaseReference dbRef = FirebaseDatabase.instance.ref("postDetails");
   final Reference storageRef = FirebaseStorage.instance.ref();
 
-  Future<dynamic> retrieveMyPostDetail() async {
+  Future retrieveMyPostDetail() async {
     List<Post> myPostsList = [];
     try {
       await dbRef

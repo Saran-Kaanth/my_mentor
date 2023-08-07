@@ -346,6 +346,53 @@ class MyProfileScreenState extends State<MyProfileScreen>
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      textSubHeadWidget("Skills"),
+                      spaceBox(5),
+                      // Expanded(
+                      //   child: GridView.count(
+                      //     crossAxisCount: 1,
+                      //     crossAxisSpacing: 4,
+                      //     mainAxisSpacing: 8,
+                      //     children: List.generate(
+                      //         state.userProfileDetailsModel!.skills!.length,
+                      //         (index) {
+                      //       return Container(
+                      //         color: Colors.grey.shade700,
+                      //         child: Text(
+                      //             state.userProfileDetailsModel!.skills![index]),
+                      //       );
+                      //     }),
+                      //   ),
+                      // ),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        itemCount:
+                            state.userProfileDetailsModel!.skills!.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 30,
+                            mainAxisExtent: 50),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            // height: 10,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(color: Colors.deepOrangeAccent)),
+                            // color: Colors.grey.shade700,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                state.userProfileDetailsModel!.skills![index],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      spaceBox(15),
                       textSubHeadWidget("Date of Birth"),
                       spaceBox(5),
                       textValueWidget(state.userProfileDetailsModel!.dob == null
