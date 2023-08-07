@@ -31,14 +31,10 @@ class MyApp extends StatelessWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => AuthBloc(authRepository: AuthRepository()),
-            ),
-            BlocProvider(
-              create: (context) => ProfileBloc(),
-            ),
-            BlocProvider(
-              create: (context) => PostBloc(),
-            ),
+                create: (context) =>
+                    AuthBloc(authRepository: AuthRepository())),
+            BlocProvider(create: (context) => ProfileBloc()),
+            BlocProvider(create: (context) => PostBloc()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

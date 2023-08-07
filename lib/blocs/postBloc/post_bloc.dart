@@ -19,7 +19,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<PostLoadingEvent>((event, emit) async {
       try {
         emit(PostLoadingState());
-        emit(PostLoadedState(await postRepository.retrieveMyPostDetail()));
+        emit(PostLoadedState(myPostsList: await postRepository.retrieveMyPostDetail()));
         print("loaded success");
       } catch (e) {
         print(e.toString());

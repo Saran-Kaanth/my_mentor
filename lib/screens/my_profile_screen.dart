@@ -348,31 +348,17 @@ class MyProfileScreenState extends State<MyProfileScreen>
                     children: [
                       textSubHeadWidget("Skills"),
                       spaceBox(5),
-                      // Expanded(
-                      //   child: GridView.count(
-                      //     crossAxisCount: 1,
-                      //     crossAxisSpacing: 4,
-                      //     mainAxisSpacing: 8,
-                      //     children: List.generate(
-                      //         state.userProfileDetailsModel!.skills!.length,
-                      //         (index) {
-                      //       return Container(
-                      //         color: Colors.grey.shade700,
-                      //         child: Text(
-                      //             state.userProfileDetailsModel!.skills![index]),
-                      //       );
-                      //     }),
-                      //   ),
-                      // ),
                       GridView.builder(
                         shrinkWrap: true,
                         itemCount:
                             state.userProfileDetailsModel!.skills!.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 30,
-                            mainAxisExtent: 50),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 7,
+                                mainAxisExtent: 50,
+                                childAspectRatio: 3.5),
                         itemBuilder: (context, index) {
                           return Container(
                             // height: 10,
@@ -381,8 +367,8 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                 border:
                                     Border.all(color: Colors.deepOrangeAccent)),
                             // color: Colors.grey.shade700,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+
+                            child: Center(
                               child: Text(
                                 state.userProfileDetailsModel!.skills![index],
                                 textAlign: TextAlign.center,
@@ -413,7 +399,7 @@ class MyProfileScreenState extends State<MyProfileScreen>
                           ? "NA"
                           : "+91" +
                               state.userProfileDetailsModel!.phone.toString()),
-                      spaceBox(25),
+                      spaceBox(10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -437,10 +423,6 @@ class MyProfileScreenState extends State<MyProfileScreen>
                       )
                     ],
                   ));
-              // return Text(
-              //   "Date of Birth",
-              //   style: TextStyle(color: Colors.white, fontSize: 18),
-              // );
             } else if (state is ProfileLoadingState) {
               return loadingWidget();
             } else if (state is ProfileErrorState) {
@@ -477,7 +459,9 @@ class MyProfileScreenState extends State<MyProfileScreen>
               BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
                   if (state is PostLoadedState) {
-                    if (state.myPostsList.length == 0) {
+                    print("state entered");
+                    print(state.myPostsList.length);
+                    if (state.myPostsList.isEmpty) {
                       return Center(
                         child: Text(
                           "No Posts Yet!",
@@ -520,9 +504,7 @@ class MyProfileScreenState extends State<MyProfileScreen>
   }
 
   Widget settingsWidget() {
-    return Center(
-      child: Text("Hello Settings"),
-    );
+    return Container();
   }
 
   Widget loadingWidget() {

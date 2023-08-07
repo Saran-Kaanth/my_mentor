@@ -15,8 +15,8 @@ class PostUploadingState extends PostState {}
 class PostUploadedState extends PostState {}
 
 class PostLoadedState extends PostState {
-  List myPostsList;
-  PostLoadedState(this.myPostsList);
+  List<Post?> myPostsList;
+  PostLoadedState({required this.myPostsList});
 }
 
 class PostErrorState extends PostState {

@@ -11,7 +11,7 @@ class PostRepository {
   final Reference storageRef = FirebaseStorage.instance.ref();
 
   Future retrieveMyPostDetail() async {
-    List<Post> myPostsList = [];
+    List<Post?> myPostsList = [];
     try {
       await dbRef
           .orderByChild("authorId")

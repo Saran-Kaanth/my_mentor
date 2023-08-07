@@ -1,5 +1,4 @@
 class Post {
-  // String? postId;
   String? postedBy;
   String? authorId;
   String? postDate;
