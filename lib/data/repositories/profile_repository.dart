@@ -28,7 +28,6 @@ class ProfileRepository {
         allData.forEach((key, value) {
           profileData = UserProfileDetailsModel.fromMap(allData);
         });
-
         return profileData;
       });
     } catch (e) {

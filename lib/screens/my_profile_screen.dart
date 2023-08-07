@@ -187,6 +187,8 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                               ],
                                             ),
                                             onPressed: () async {
+                                              await user
+                                                  .updateDisplayName("Saran K");
                                               await dbRef
                                                   .orderByChild("displayName")
                                                   .equalTo("Saran ")
@@ -420,25 +422,29 @@ class MyProfileScreenState extends State<MyProfileScreen>
             horizontal: size.width / 25,
           ),
           child: Stack(
-            // alignment: Alignment(5, 5),
-            alignment: Alignment.bottomRight,
+            alignment: Alignment(1, 1),
+            // alignment: Alignment.bottomRight,
             // clipBehavior: Clip.antiAlias,
             // fit: StackFit.passthrough,
             children: [
-              Container(
-                height: 300,
-                width: 100,
-                // color: Colors.blueGrey,
+              BlocBuilder<PostBloc, PostState>(
+                builder: (context, state) {
+                  if (state is PostLoadedState) {
+                    if (state.myPostsList.length == 0) {
+                      return Center(
+                        child: Text(
+                          "No Posts Yet!",
+                          style: TextStyle(
+                              fontSize: 20, color: Colors.deepOrangeAccent),
+                        ),
+                      );
+                    }
+                  }
+                  return Container();
+                },
               ),
-              // IconButton(
-              //   onPressed: () {},
-              //   icon: Icon(Icons.add_photo_alternate_outlined),
-              //   iconSize: 40,
-              // )
               FloatingActionButton(
                 onPressed: () async {
-                  // chooseImage(ImageSource.gallery);
-                  // Future.delayed(Duration(seconds: 2));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -446,12 +452,6 @@ class MyProfileScreenState extends State<MyProfileScreen>
                       ));
                 },
                 child: Container(
-                  // height: 50,
-                  // width: 50,
-                  // color: Colors.blue,
-                  // decoration: BoxDecoration(
-                  //     // border: Border.all(color: Colors.deepOrangeAccent),
-                  //     borderRadius: BorderRadius.circular(150)),
                   child: Icon(
                     Icons.add,
                     size: 50,

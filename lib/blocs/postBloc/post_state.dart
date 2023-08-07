@@ -14,7 +14,10 @@ class PostUploadingState extends PostState {}
 
 class PostUploadedState extends PostState {}
 
-class PostLoadedState extends PostState {}
+class PostLoadedState extends PostState {
+  List<Post?> myPostsList;
+  PostLoadedState(this.myPostsList);
+}
 
 class PostErrorState extends PostState {
   String errorMessage;

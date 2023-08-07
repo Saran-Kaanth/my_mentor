@@ -1,5 +1,5 @@
 class Post {
-  String? postId;
+  // String? postId;
   String? postedBy;
   String? authorId;
   String? postDate;
@@ -7,12 +7,11 @@ class Post {
   String? postDescription;
   int? likes;
 
-  Post(this.postUrl, this.postId, this.postedBy, this.authorId, this.postDate,
+  Post(this.postUrl, this.postedBy, this.authorId, this.postDate,
       this.postDescription);
 
   Post.fromMap(Map<dynamic, dynamic> postData)
-      : postId = postData["postId"],
-        postedBy = postData["postedBy"],
+      : postedBy = postData["postedBy"],
         authorId = postData["authorId"],
         postDate = postData["postDate"],
         postUrl = postData["postUrl"],
@@ -21,7 +20,6 @@ class Post {
 
   Map<String, dynamic> toMap() {
     return {
-      "postId": postId,
       "postedBy": postedBy,
       "authorId": authorId,
       "postDate": postDate,

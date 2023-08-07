@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
 import 'package:my_mentor/screens/example_screen.dart';
 import 'package:my_mentor/screens/home_screen.dart';
@@ -49,6 +50,7 @@ class RouteScreenState extends State<RouteScreen> {
   Widget bottomBar() {
     Size size = MediaQuery.of(context).size;
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    final postBloc = BlocProvider.of<PostBloc>(context);
     return Container(
       // height: size.width / 4.5,
       // color: Colors.blueGrey.shade800,
@@ -80,6 +82,7 @@ class RouteScreenState extends State<RouteScreen> {
                 text: "Profile",
                 onPressed: () {
                   profileBloc.add(ProfileLoadEvent());
+                  postBloc.add(PostLoadingEvent());
                 },
               )
             ]),

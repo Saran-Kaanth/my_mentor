@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/screens/my_profile_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:my_mentor/widgets.dart';
 
 class PostAddScreen extends StatefulWidget {
   const PostAddScreen({Key? key}) : super(key: key);
@@ -16,9 +17,8 @@ class PostAddScreen extends StatefulWidget {
 }
 
 class PostAddScreenState extends State<PostAddScreen> {
+  String postDescription = "";
   File? imageFile;
-  String? postDescription;
-
   @override
   void initState() {
     super.initState();
@@ -146,30 +146,78 @@ class PostAddScreenState extends State<PostAddScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        postBloc.add(PostSubmittingEvent(
-                            imageFile!.path, postDescription!));
+                    BlocConsumer<PostBloc, PostState>(
+                      listener: (context, state) {
+                        if (state is PostUploadedState) {
+                          Navigator.pop(context);
+                          postBloc.add(PostLoadingEvent());
+                        }
                       },
-                      splashColor: Colors.deepOrangeAccent,
-                      child: Container(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-                          child: Text(
-                            "Post It",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                      builder: (context, state) {
+                        if (state is PostImageUploadingState) {
+                          return CircularProgressIndicator();
+                        }
+                        return InkWell(
+                          onTap: () async {
+                            print("clicked");
+                            print(imageFile!.path);
+                            print(postDescription);
+                            if (imageFile != "") {
+                              postBloc.add(PostSubmittingEvent(
+                                  imageFile!.path, postDescription));
+                            }
+                          },
+                          splashColor: Colors.deepOrangeAccent,
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 2),
+                              child: Text(
+                                "Post It",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                            width: 120,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                border:
+                                    Border.all(color: Colors.deepOrangeAccent)),
                           ),
-                        ),
-                        width: 120,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            border: Border.all(color: Colors.deepOrangeAccent)),
-                      ),
+                        );
+                      },
                     )
                   ],
+                ),
+                BlocBuilder<PostBloc, PostState>(
+                  builder: (context, state) {
+                    if (state is PostUploadingState) {
+                      return Center(
+                        child: Text(
+                          "Post Uploading...",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
+                      );
+                    } else if (state is PostImageUploadingState) {
+                      return Center(
+                        child: Text(
+                          "Image Uploading...",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
+                      );
+                    } else if (state is PostErrorState) {
+                      return Center(
+                        child: Text(
+                          state.errorMessage,
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 )
               ],
             )),
