@@ -32,10 +32,10 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.5
-  firebase_core: 
-  firebase_auth: 
-  firebase_database: 
-  firebase_storage:
+  firebase_core: ^2.15.0
+  firebase_auth: ^4.7.2
+  firebase_database: ^10.2.4
+  firebase_storage: ^11.2.5
   flutter_bloc: ^8.1.3
   pinput: ^2.2.31
   google_fonts: ^5.1.0
@@ -46,13 +46,12 @@ dependencies:
   google_sign_in: ^6.1.4
   permission_handler: ^10.4.2
   intl: ^0.18.1
-  form_controller:
-  date_field:
-  select_form_field:
-  image_picker:
+  form_controller: ^0.8.5
+  date_field: ^3.0.5
+  select_form_field: ^2.2.0
+  image_picker: ^1.0.2
   google_nav_bar: ^5.0.6
-  switch_tab:
-  image_cropper: 
+  image_cropper: ^5.0.0
   # path_provider:  
   # image_gallery_saver: 
 

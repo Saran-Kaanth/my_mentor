@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/screens/login_screen.dart';
 import 'package:my_mentor/screens/route_screen.dart';
 
@@ -67,7 +69,9 @@ class AuthService {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
-          return RouteScreen();
+          final postBloc = BlocProvider.of<PostBloc>(context);
+          postBloc.add(AllPostRetrieveEvent());
+          return const RouteScreen();
         } else {
           return LoginScreen();
         }

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:my_mentor/data/repositories/models/user.dart';
+import 'package:my_mentor/data/models/user.dart';
 // import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 // import 'package:my_mentor/screens/home_screen.dart';
 // import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
@@ -20,10 +20,6 @@ class AuthRepository {
       currentUser = _firebaseAuth.currentUser;
       return await initialDataSetup(
           userCredential.additionalUserInfo!.isNewUser);
-      // if (userCredential.additionalUserInfo!.isNewUser) {
-      //   return await initialDataSetup();
-      // }
-      // return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         throw Exception("The password is weak");
@@ -36,6 +32,7 @@ class AuthRepository {
   }
 
   Future<UserProfileDetailsModel> initialDataSetup(bool isNewUser) async {
+    print(currentUser!.uid);
     UserProfileDetailsModel userProfileDetailsModel = UserProfileDetailsModel(
         currentUser!.uid,
         currentUser!.displayName != "" ? currentUser!.displayName : null,
@@ -144,7 +141,7 @@ class AuthRepository {
       UserCredential authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
       currentUser = _firebaseAuth.currentUser;
-      // print(authResult.additionalUserInfo!.profile);
+      print(authResult.additionalUserInfo!.profile);
       return await initialDataSetup(authResult.additionalUserInfo!.isNewUser);
       // if (authResult.additionalUserInfo!.isNewUser) {
       //   return await initialDataSetup();

@@ -5,12 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
+import 'package:my_mentor/blocs/searchBloc/search_bloc.dart';
 import 'package:my_mentor/data/repositories/auth_repository.dart';
-import 'package:my_mentor/data/repositories/models/user.dart';
+// import 'package:my_mentor/data/repositories/models/user.dart';
 // import 'package:my_mentor/screens/academic_details_screen.dart';
 import 'package:my_mentor/screens/home_screen.dart';
 import 'package:my_mentor/screens/login_screen.dart';
-import 'package:my_mentor/screens/profile_details_screen.dart';
+// import 'package:my_mentor/screens/profile_details_screen.dart';
 import 'package:my_mentor/screens/route_screen.dart';
 import 'package:my_mentor/screens/signup_screen.dart';
 import 'package:my_mentor/screens/splash_screen.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
                     AuthBloc(authRepository: AuthRepository())),
             BlocProvider(create: (context) => ProfileBloc()),
             BlocProvider(create: (context) => PostBloc()),
+            BlocProvider(create: (context) => SearchBloc()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

@@ -5,18 +5,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_controller/form_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:my_mentor/data/repositories/models/user.dart';
+import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
+import 'package:my_mentor/data/models/user.dart';
 import 'package:my_mentor/data/repositories/profile_repository.dart';
+import 'package:my_mentor/screens/my_profile_screen.dart';
 import 'package:my_mentor/utils.dart';
+import 'package:my_mentor/widgets.dart';
 import 'package:select_form_field/select_form_field.dart';
 // import 'package:pinput/pinput.dart';
 
 class ProfileDetailsScreen extends StatelessWidget {
   final UserProfileDetailsModel? userProfileDetailsModel;
-  ProfileDetailsScreen({super.key, required this.userProfileDetailsModel});
+  bool first = false;
+  ProfileDetailsScreen(
+      {super.key, required this.userProfileDetailsModel, required this.first});
   FormController formController = FormController();
   Uint8List? image;
   // User user = FirebaseAuth.instance.currentUser!;
@@ -35,6 +41,7 @@ class ProfileDetailsScreen extends StatelessWidget {
     final User user = FirebaseAuth.instance.currentUser!;
     Size size = MediaQuery.of(context).size;
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
     final List<Map<String, dynamic>> isMentorOptions = [
       {'value': 'true', 'label': 'Yes'},
       {'value': 'false', 'label': 'No'}
@@ -107,7 +114,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "Setup",
+                                first ? "Setup" : "Edit",
                                 style: TextStyle(
                                     color: Colors.deepOrangeAccent,
                                     fontSize: 30,
@@ -386,7 +393,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "Skills",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.perm_identity_outlined),
+                          helperText: "use (,)"),
                     ),
                     SizedBox(
                       height: 5,
@@ -413,29 +421,57 @@ class ProfileDetailsScreen extends StatelessWidget {
                             toBoolean(newValue!);
                       },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        CupertinoButton(
-                            child: Icon(Icons.arrow_forward),
-                            onPressed: () async {
-                              if (!formController.key.currentState!
-                                  .validate()) {
-                                return;
-                              }
-                              formController.key.currentState!.save();
-
-                              await ProfileRepository()
-                                  .updateUserProfile(userProfileDetailsModel!);
-                              await user.updateDisplayName(
-                                  userProfileDetailsModel!.displayName);
-                              await user.updatePhotoURL(
-                                  userProfileDetailsModel!.photoUrl);
-                              print(user.displayName);
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, "route", (route) => false);
-                            })
-                      ],
+                    BlocConsumer<ProfileBloc, ProfileState>(
+                      listener: (context, state) {
+                        if (state is ProfileUpdatedState) {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, "route", (route) => false);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is ProfileUpdatingState) {
+                          return loadingWidget();
+                        } else if (state is ProfileErrorState) {
+                          return Center(
+                            child: textValueWidget(state.errorMessage,
+                                fontSize: 20),
+                          );
+                        }
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            first
+                                ? Container()
+                                : CupertinoButton(
+                                    child: Container(
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 40,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }),
+                            CupertinoButton(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  size: 40,
+                                ),
+                                onPressed: () async {
+                                  if (!formController.key.currentState!
+                                      .validate()) {
+                                    return;
+                                  }
+                                  formController.key.currentState!.save();
+                                  profileBloc.add(ProfileUpdateEvent(
+                                      userProfileDetailsModel!));
+                                })
+                          ],
+                        );
+                      },
                     )
                   ],
                 ),

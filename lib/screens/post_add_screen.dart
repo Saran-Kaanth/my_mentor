@@ -7,8 +7,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/screens/my_profile_screen.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:my_mentor/widgets.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:my_mentor/widgets.dart';
 
 class PostAddScreen extends StatefulWidget {
   const PostAddScreen({Key? key}) : super(key: key);

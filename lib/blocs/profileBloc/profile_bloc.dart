@@ -1,6 +1,6 @@
 // import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_mentor/data/repositories/models/user.dart';
+import 'package:my_mentor/data/models/user.dart';
 import 'package:my_mentor/data/repositories/profile_repository.dart';
 // import 'package:equatable/equatable.dart';
 
@@ -24,6 +24,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         print("ProfileLoaded success");
       } catch (e) {
         emit(ProfileErrorState("Unable to fetch data"));
+      }
+    });
+
+    on<ProfileUpdateEvent>((event, emit) async {
+      try {
+        emit(ProfileUpdatingState());
+        await ProfileRepository()
+            .updateUserProfile(event.userProfileDetailsModel);
+        emit(ProfileUpdatedState());
+      } catch (e) {
+        emit(ProfileErrorState("Please Try Again"));
       }
     });
   }

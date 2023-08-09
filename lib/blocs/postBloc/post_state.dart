@@ -23,3 +23,10 @@ class PostErrorState extends PostState {
   String errorMessage;
   PostErrorState(this.errorMessage);
 }
+
+class AllPostsRetrievingState extends PostState {}
+
+class AllPostsRetreivedState extends PostState {
+  List<Post>? allPostsList;
+  AllPostsRetreivedState(this.allPostsList);
+}

@@ -12,3 +12,5 @@ class PostSubmittingEvent extends PostEvent {
 
   PostSubmittingEvent(this.photoUrl, this.postDescription);
 }
+
+class AllPostRetrieveEvent extends PostEvent{}

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
-import 'package:my_mentor/data/repositories/models/user.dart';
+// import 'package:my_mentor/data/repositories/models/user.dart';
 import 'package:my_mentor/screens/profile_details_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -37,7 +37,7 @@ class SignUpScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => ProfileDetailsScreen(
                             userProfileDetailsModel:
-                                state.userProfileDetailsModel,
+                                state.userProfileDetailsModel,first: true,
                           ),
                         ),
                         (route) => false);

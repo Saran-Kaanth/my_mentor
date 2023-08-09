@@ -9,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
+// import 'package:my_mentor/data/repositories/auth_repository.dart';
 import 'package:my_mentor/screens/post_add_screen.dart';
+import 'package:my_mentor/screens/profile_details_screen.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -97,14 +99,6 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                 style:
                                     TextStyle(fontSize: 30, color: Colors.blue),
                               ),
-                              IconButton(
-                                  onPressed: () async {
-                                    bloc.add(AuthSignOutEvent());
-                                  },
-                                  icon: Icon(
-                                    Icons.output_sharp,
-                                    size: 25,
-                                  )),
                             ],
                           ),
                         ),
@@ -187,17 +181,27 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                               ],
                                             ),
                                             onPressed: () async {
-                                              await user
-                                                  .updateDisplayName("Saran K");
-                                              await dbRef
-                                                  .orderByChild("displayName")
-                                                  .equalTo("Saran ")
-                                                  .get()
-                                                  .then((value) =>
-                                                      print(value.value))
-                                                  .onError((error,
-                                                          stackTrace) =>
-                                                      print(error.toString()));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProfileDetailsScreen(
+                                                            userProfileDetailsModel:
+                                                                state
+                                                                    .userProfileDetailsModel,
+                                                            first: false,
+                                                          )));
+                                              // await user
+                                              //     .updateDisplayName("Saran K");
+                                              // await dbRef
+                                              //     .orderByChild("displayName")
+                                              //     .equalTo("Saran ")
+                                              //     .get()
+                                              //     .then((value) =>
+                                              //         print(value.value))
+                                              //     .onError((error,
+                                              //             stackTrace) =>
+                                              //         print(error.toString()));
                                             }),
                                       )
                                     ],
@@ -316,7 +320,7 @@ class MyProfileScreenState extends State<MyProfileScreen>
                         children: [
                           profileWidget(size),
                           postWidget(size),
-                          settingsWidget()
+                          settingsWidget(size, bloc)
                         ],
                       ))
                     ],
@@ -459,8 +463,6 @@ class MyProfileScreenState extends State<MyProfileScreen>
               BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
                   if (state is PostLoadedState) {
-                    print("state entered");
-                    print(state.myPostsList?.length);
                     if (state.myPostsList == null ||
                         state.myPostsList!.isEmpty) {
                       return Center(
@@ -470,23 +472,58 @@ class MyProfileScreenState extends State<MyProfileScreen>
                               fontSize: 20, color: Colors.deepOrangeAccent),
                         ),
                       );
+                    } else {
+                      return SingleChildScrollView(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.myPostsList!.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 8,
+                                  mainAxisSpacing: 7,
+                                  childAspectRatio: 0.9),
+                          itemBuilder: (context, index) {
+                            print(state.myPostsList![index]!.authorId);
+                            return InkWell(
+                              onTap: () {
+                                print(
+                                    state.myPostsList![index]!.postDescription);
+                                fullImage(
+                                    state.myPostsList![index]!.postUrl!,
+                                    state.myPostsList![index]!.postDescription!,
+                                    context,
+                                    size);
+                              },
+                              child: Container(
+                                color: Colors.grey.shade600,
+                                child: Image.network(state
+                                    .myPostsList![index]!.postUrl
+                                    .toString()),
+                              ),
+                            );
+                          },
+                        ),
+                      );
                     }
                   }
                   return Container();
                 },
               ),
-              FloatingActionButton(
-                onPressed: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PostAddScreen(),
-                      ));
-                },
-                child: Container(
-                  child: Icon(
-                    Icons.add,
-                    size: 50,
+              Positioned(
+                child: FloatingActionButton(
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PostAddScreen(),
+                        ));
+                  },
+                  child: Container(
+                    child: Icon(
+                      Icons.add,
+                      size: 50,
+                    ),
                   ),
                 ),
               )
@@ -504,8 +541,85 @@ class MyProfileScreenState extends State<MyProfileScreen>
     }
   }
 
-  Widget settingsWidget() {
-    return Container();
+  Widget settingsWidget(Size size, Bloc bloc) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: size.width / 18,
+          horizontal: size.width / 25,
+        ),
+        child: Column(
+          children: [
+            InkWell(
+              onTap: () async {
+                bloc.add(AuthSignOutEvent());
+              },
+              splashColor: Colors.red,
+              child: Container(
+                width: size.width,
+                height: 50,
+                // color: Colors.grey.shade700,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9),
+                    border: Border.all(color: Colors.deepOrangeAccent)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.logout_rounded,
+                        size: 30,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      textValueWidget("Logout", fontSize: 25)
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  fullImage(String imgSrc, String postDescription, context, Size size) {
+    return showDialog(
+      context: context,
+      barrierLabel: "Hello",
+      builder: (context) {
+        return Dialog(
+          alignment: Alignment.topCenter,
+          // backgroundColor: Colors.white,
+          child: Container(
+            height: size.height / 2,
+            width: size.height / 1.3,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                spaceBox(25),
+                Container(
+                    height: size.height / 4,
+                    width: size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 3),
+                    color: Colors.grey.shade700,
+                    child: Image.network(imgSrc)),
+                spaceBox(20),
+                textValueWidget(postDescription, fontSize: 20)
+                // Text(
+                //   postDescription,
+                //   textAlign: TextAlign.left,
+                // )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget loadingWidget() {
@@ -530,10 +644,13 @@ Text textSubHeadWidget(String textValue) {
   );
 }
 
-Text textValueWidget(String textValue) {
+Text textValueWidget(String textValue,
+    {double fontSize = 15, Color textColor = Colors.grey}) {
   return Text(
     textValue,
-    style: TextStyle(color: Colors.grey.shade300, fontSize: 15),
+    style: TextStyle(
+        color: textColor == Colors.grey ? Colors.grey.shade300 : textColor,
+        fontSize: fontSize),
   );
 }
 

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
-import 'package:my_mentor/data/repositories/models/post.dart';
+// import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
+import 'package:my_mentor/data/models/post.dart';
 import 'package:my_mentor/data/repositories/post_repository.dart';
 
 part 'post_event.dart';
@@ -34,18 +34,33 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         photoUrl = await postRepository.storePostImage(event.photoUrl);
         emit(PostImageUploadedState());
         emit(PostUploadingState());
+        // Post newPost = Post(postUrl: photoUrl!, postedBy: postRepository.currentUser.displayName!, authorId: postRepository.currentUser.uid,
+        // postDate: dateFormat.format(DateTime.now()).toString(), postDescription: event.postDescription);
         Post newPost = Post(
-            photoUrl,
             postRepository.currentUser.displayName,
+            photoUrl,
             postRepository.currentUser.uid,
             dateFormat.format(DateTime.now()).toString(),
-            event.postDescription);
+            event.postDescription,
+            0);
         await postRepository.uploadPost(newPost);
         emit(PostUploadedState());
       } catch (e) {
         print(e.toString());
         emit(PostErrorState("Error while uploading posts!"));
       }
+    });
+
+    on<AllPostRetrieveEvent>((event, emit) async {
+      try {
+        emit(AllPostsRetrievingState());
+        var allPostsList = await postRepository.retrieveAllPosts();
+        emit(AllPostsRetreivedState(allPostsList));
+      } catch (e) {
+        PostErrorState("Try Again Later");
+      }
+
+      // print("post data loaded");
     });
   }
 }

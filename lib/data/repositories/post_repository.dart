@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:my_mentor/data/repositories/models/post.dart';
+import 'package:my_mentor/data/models/post.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class PostRepository {
@@ -10,8 +10,8 @@ class PostRepository {
   DatabaseReference dbRef = FirebaseDatabase.instance.ref("postDetails");
   final Reference storageRef = FirebaseStorage.instance.ref();
 
-  Future<List<Post?>>? retrieveMyPostDetail() async {
-    List<Post?>? myPostsList = [];
+  Future<List<Post>> retrieveMyPostDetail() async {
+    List<Post> myPostsList = [];
     try {
       await dbRef
           .orderByChild("authorId")
@@ -19,28 +19,34 @@ class PostRepository {
           .once()
           .then((value) {
         if (value.snapshot.value == null) {
-          print(myPostsList);
-          print(myPostsList.runtimeType);
+          // print(myPostsList);
+          // print(myPostsList.runtimeType);
+          return myPostsList;
+        } else {
+          Map myPosts = value.snapshot.value as Map;
+          // print(myPosts);
+          myPosts.values.forEach((element) {
+            myPostsList.add(Post.fromMap(element));
+            print(myPostsList);
+          });
+          print("data is there" + myPostsList[0].authorId.toString());
+          myPostsList.forEach((element) {
+            print(element.authorId);
+          });
           return myPostsList;
         }
-        Map myPosts = value.snapshot.value as Map;
-
-        myPosts.forEach((key, value) {
-          myPostsList.add(Post.fromMap(myPosts));
-        });
-        print(myPostsList);
-        return myPostsList;
       });
     } catch (e) {
       print(e);
       throw Exception(e);
     }
-    return [];
+    return myPostsList;
+    // return [];
   }
 
   Future<String> storePostImage(String? filePath) async {
     String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    print("function added");
+    // print("function added");
     try {
       Reference imageUploadRef = storageRef
           .child("images")
@@ -48,11 +54,11 @@ class PostRepository {
           .child("posts")
           .child(uniqueFileName);
       await imageUploadRef.putFile(File(filePath!));
-      print(imageUploadRef.getDownloadURL());
+      // print(imageUploadRef.getDownloadURL());
       return await imageUploadRef.getDownloadURL();
     } catch (e) {
-      print("error");
-      print(e.toString());
+      // print("error");
+      // print(e.toString());
       throw Exception(e);
     }
   }
@@ -66,5 +72,35 @@ class PostRepository {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  Future<List<Post>> retrieveAllPosts() async {
+    List<Post> allPostsList = [];
+    try {
+      print("Repo started");
+      await dbRef.once().then((value) {
+        if (value.snapshot.value == null) {
+          return allPostsList;
+        } else {
+          Map allPosts = value.snapshot.value as Map;
+          allPosts.values.forEach((element) {
+            allPostsList.add(Post.fromMap(element));
+          });
+          allPostsList.shuffle();
+          return allPostsList;
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e);
+    }
+    return allPostsList;
+  }
+
+  Future<String> getAuthorImg(String authorId) async {
+    String authorImg =
+        "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com%2Fid%2F1393750072%2Fvector%2Fflat-white-icon-man-for-web-design-silhouette-flat-illustration-vector-illustration-stock.jpg%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Ds9hO4SpyvrDIfELozPpiB_WtzQV9KhoMUP9R9gVohoU%3D&tbnid=Eck3-Z1-_NVGmM&vet=10CDsQMyiCAWoXChMI2PPIxvfOgAMVAAAAAB0AAAAAEAM..i&imgrefurl=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fblank-profile-picture&docid=rRWD3SDgbLRjnM&w=612&h=612&q=link%20for%20empty%20user%20profile%20image&safe=active&ved=0CDsQMyiCAWoXChMI2PPIxvfOgAMVAAAAAB0AAAAAEAM";
+    return authorImg;
+
   }
 }

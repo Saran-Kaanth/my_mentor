@@ -11,6 +11,8 @@ class ProfileLoadedState extends ProfileState {
   ProfileLoadedState({this.userProfileDetailsModel});
 }
 
+class ProfileUpdatingState extends ProfileState{}
+
 class ProfileUpdatedState extends ProfileState {}
 
 class ProfileErrorState extends ProfileState {
@@ -18,7 +20,4 @@ class ProfileErrorState extends ProfileState {
   ProfileErrorState(this.errorMessage);
 }
 
-class ProfileWidgedChangedState extends ProfileState {
-  int index;
-  ProfileWidgedChangedState(this.index);
-}
+
