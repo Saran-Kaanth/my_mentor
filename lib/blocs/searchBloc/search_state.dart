@@ -15,3 +15,8 @@ class SearchErrorState extends SearchState {
   String? errorMessage;
   SearchErrorState(this.errorMessage);
 }
+
+class SearchResultState extends SearchState {
+  List<UserProfileDetailsModel>? matchedUserProfiles;
+  SearchResultState(this.matchedUserProfiles);
+}

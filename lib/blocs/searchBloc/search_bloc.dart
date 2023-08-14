@@ -21,5 +21,24 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         emit(SearchErrorState("Try Searching for better results..."));
       }
     });
+
+    on<SearchUserEvent>((event, emit) async {
+      try {
+        emit(SearchLoadingState());
+        // print(event.searchText);
+        var matchedUsersData =
+            await ProfileRepository().retrieveMatchedUsers(event.searchText);
+        // print("displayname" + matchedUsersData![0].displayName.toString());
+        // for (var element in matchedUsersData!) {
+        //   if (element.displayName == event.searchText) {
+        //     print(element.displayName.toString() + " the display name");
+        //   }
+        // }
+        emit(SearchResultState(matchedUsersData));
+        // print("searching");
+      } catch (e) {
+        emit(SearchErrorState("Sorry! Not able to fetch users right now...😞"));
+      }
+    });
   }
 }

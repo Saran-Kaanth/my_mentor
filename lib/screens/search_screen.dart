@@ -60,6 +60,10 @@ class SearchScreenState extends State<SearchScreen> {
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
                                   borderRadius: BorderRadius.circular(20))),
+                          onChanged: (value) async {
+                            print(value.toString());
+                            searchBloc.add(SearchUserEvent(value));
+                          },
                         ),
                       )),
                   spaceBox(5)
@@ -135,9 +139,64 @@ class SearchScreenState extends State<SearchScreen> {
                     ),
                   ));
                 }
+              } else if (state is SearchResultState) {
+                if (state.matchedUserProfiles!.isEmpty ||
+                    state.matchedUserProfiles == null) {
+                  return Column(
+                    children: [
+                      Center(
+                        child: textValueWidget("No User Found🙁",
+                            textColor: Colors.red),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                                "“If you cannot see where you are going, ask someone who has been there before.” J Loren Norris",
+                                softWrap: true,
+                                maxLines: null,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Expanded(
+                      child: SingleChildScrollView(
+                    child: Column(children: [
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: state.matchedUserProfiles!.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: NetworkImage(state
+                                        .matchedUserProfiles![index].photoUrl
+                                        .toString()),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  textValueWidget(state
+                                      .matchedUserProfiles![index].displayName
+                                      .toString())
+                                ],
+                              ),
+                            );
+                          }),
+                    ]),
+                  ));
+                }
               } else if (state is SearchErrorState) {
                 return Center(
-                  child: textValueWidget(state.errorMessage.toString()),
+                  child: textValueWidget(state.errorMessage.toString() + "😐"),
                 );
               }
 

@@ -46,14 +46,24 @@ class MyApp extends StatelessWidget {
               primaryColor: Colors.pink,
               primarySwatch: Colors.pink,
               brightness: Brightness.light,
-              textTheme: GoogleFonts.mavenProTextTheme(),
+              fontFamily: GoogleFonts.mavenPro().fontFamily,
+              scaffoldBackgroundColor: Colors.grey.shade900,
+              // textTheme: TextTheme(
+              //     bodyText1: TextStyle(color: Colors.black),
+              //     bodyText2: TextStyle(color: Colors.black))
+              // textTheme: GoogleFonts.mavenProTextTheme(),
             ),
             darkTheme: ThemeData(
-              primaryColor: Colors.blue.shade800,
-              primarySwatch: Colors.blue,
-              brightness: Brightness.dark,
-              textTheme: GoogleFonts.mavenProTextTheme(),
-            ),
+                primaryColor: Colors.blue.shade800,
+                primarySwatch: Colors.blue,
+                brightness: Brightness.dark,
+                fontFamily: GoogleFonts.mavenPro().fontFamily,
+                textTheme: TextTheme(
+                    bodyText1: TextStyle(color: Colors.white),
+                    bodyText2: TextStyle(color: Colors.white))
+                // textTheme: GoogleFonts.mavenProTextTheme(),
+                // textTheme: TextTheme()
+                ),
             home: const SplashScreen(),
             routes: {
               'login': (context) => LoginScreen(),

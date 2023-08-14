@@ -57,6 +57,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  country_state_city_picker:
+    dependency: "direct main"
+    description:
+      name: country_state_city_picker
+      sha256: "509c282165df329ee5a29babb28e13dce3bc32166cea21b202a49c44d20cfef3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.8"
+  country_state_city_pro:
+    dependency: "direct main"
+    description:
+      name: country_state_city_pro
+      sha256: ddaacbf7bb8adae3d159623271fbe9ba18ffb52e77115550d92429831dd6fdbb
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   cross_file:
     dependency: transitive
     description:

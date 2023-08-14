@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:country_state_city_picker/country_state_city_picker.dart';
+import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:date_field/date_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -25,6 +27,9 @@ class ProfileDetailsScreen extends StatelessWidget {
       {super.key, required this.userProfileDetailsModel, required this.first});
   FormController formController = FormController();
   Uint8List? image;
+  TextEditingController country = TextEditingController();
+  TextEditingController state = TextEditingController();
+  TextEditingController city = TextEditingController();
   // User user = FirebaseAuth.instance.currentUser!;
 
   void dispose() {
@@ -93,6 +98,7 @@ class ProfileDetailsScreen extends StatelessWidget {
             : userProfileDetailsModel!.skills!.join(",").toString();
     formController.controller("isMentor").text =
         userProfileDetailsModel!.isMentor.toString();
+    country.text = userProfileDetailsModel!.country.toString();
 
     return Scaffold(
         body: SafeArea(
@@ -190,7 +196,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      //// style: TextStyle(color: Colors.white),
                       controller: formController.controller("displayName"),
                       onChanged: (value) {
                         userProfileDetailsModel!.displayName = value.toString();
@@ -211,7 +217,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       height: 5,
                     ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("fullName"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.fullName = value,
@@ -231,7 +237,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       height: 5,
                     ),
                     DateTimeFormField(
-                      dateTextStyle: TextStyle(color: Colors.white),
+                      // dateTextStyle: TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         hintStyle: TextStyle(color: Colors.blue),
                         errorStyle: TextStyle(color: Colors.redAccent),
@@ -255,7 +261,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       height: 5,
                     ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("occupation"),
                       onSaved: (newValue) =>
                           userProfileDetailsModel!.occupation = newValue,
@@ -269,7 +275,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "Occupation",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.local_library_outlined)),
                     ),
                     SizedBox(
                       height: 5,
@@ -281,7 +287,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       keyboardType: TextInputType.multiline,
                       // maxLines: 3,
                       // expands: true,
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("headline"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.headline = value,
@@ -289,16 +295,16 @@ class ProfileDetailsScreen extends StatelessWidget {
                           userProfileDetailsModel!.headline = newValue,
                       validator: (value) {
                         if (value != null && value.isEmpty) {
-                          return "Your Country";
+                          return "Give short info of u..";
                         }
                         return null;
                       },
                       decoration: const InputDecoration(
                           labelText: "About Yourself",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.info_outline)),
                     ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("city"),
                       onSaved: (newValue) =>
                           userProfileDetailsModel!.city = newValue,
@@ -312,13 +318,13 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "City",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.location_on_outlined)),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("state"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.state = value,
@@ -332,13 +338,40 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "State",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.location_city_outlined)),
                     ),
                     SizedBox(
                       height: 5,
                     ),
+                    // SelectState(
+                    //     dropdownColor: Colors.grey.shade300,
+                    //    // style: TextStyle(color: Colors.white),
+                    //     onCountryChanged: (value) {
+                    //       print(value);
+                    //     },
+                    //     onStateChanged: (value) {
+                    //       print(value);
+                    //     },
+                    //     onCityChanged: (value) {
+                    //       print(value);
+                    //     }),
+                    // CountryStateCityPicker(
+                    //   country: formController.controller("country"),
+                    //   // state: formController.controller("state"),
+                    //   // city: formController.controller("city"),
+                    //   // country: country,
+                    //   state: state,
+                    //   city: city,
+                    //   textFieldDecoration: InputDecoration(
+                    //     icon: Icon(Icons.location_on_outlined),
+                    //   ),
+                    //   dialogColor: Colors.grey.shade500,
+                    // ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("country"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.country = value,
@@ -352,14 +385,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "Country",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.location_city_outlined)),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     TextFormField(
                       keyboardType: TextInputType.number,
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("phone"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.phone = value,
@@ -373,13 +406,13 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "Mobile",
-                          prefixIcon: Icon(Icons.perm_identity_outlined)),
+                          prefixIcon: Icon(Icons.phone_android_outlined)),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       controller: formController.controller("skills"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.skills = skillsToList(value),
@@ -393,14 +426,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                           labelText: "Skills",
-                          prefixIcon: Icon(Icons.perm_identity_outlined),
+                          prefixIcon: Icon(Icons.grade_outlined),
                           helperText: "use (,)"),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     SelectFormField(
-                      style: TextStyle(color: Colors.white),
+                      // style: TextStyle(color: Colors.white),
                       // initialValue: ,
                       icon: Icon(Icons.work_outlined),
                       controller: formController.controller("isMentor"),
@@ -461,11 +494,21 @@ class ProfileDetailsScreen extends StatelessWidget {
                                   size: 40,
                                 ),
                                 onPressed: () async {
+                                  print(country.value);
+                                  print(formController.controller("city").text);
                                   if (!formController.key.currentState!
                                       .validate()) {
                                     return;
                                   }
                                   formController.key.currentState!.save();
+                                  // print(country.value);
+                                  // userProfileDetailsModel!.country =
+                                  //     formController.controller("country").text;
+                                  // userProfileDetailsModel!.state =
+                                  //     formController.controller("state").text;
+                                  // userProfileDetailsModel!.city =
+                                  //     formController.controller("city").text;
+
                                   profileBloc.add(ProfileUpdateEvent(
                                       userProfileDetailsModel!));
                                 })
@@ -497,6 +540,7 @@ List skillsToList(String value) {
   print(value.split(","));
   return value.split(",");
 }
+
 
 
 //  Container(
