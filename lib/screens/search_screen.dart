@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
 import 'package:my_mentor/blocs/searchBloc/search_bloc.dart';
 import 'package:my_mentor/data/models/user.dart';
 import 'package:my_mentor/data/repositories/profile_repository.dart';
@@ -26,6 +27,7 @@ class SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final searchBloc = BlocProvider.of<SearchBloc>(context);
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
     return Scaffold(
         body: SafeArea(
       child: Column(
@@ -116,6 +118,20 @@ class SearchScreenState extends State<SearchScreen> {
                             itemCount: state.locBasedUsersProfiles!.length,
                             itemBuilder: (context, index) {
                               return ListTile(
+                                onTap: () {
+                                  profileBloc.add(ProfileLoadEvent(
+                                      myProfile: false,
+                                      userProfileDetailsModel:
+                                          state.locBasedUsersProfiles![index]));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MyProfileScreen(
+                                          viewer: true,
+                                        ),
+                                      ));
+                                },
                                 title: Row(
                                   children: [
                                     CircleAvatar(
@@ -170,10 +186,24 @@ class SearchScreenState extends State<SearchScreen> {
                     child: Column(children: [
                       ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: state.matchedUserProfiles!.length,
                           itemBuilder: (context, index) {
                             return ListTile(
+                              onTap: () {
+                                profileBloc.add(ProfileLoadEvent(
+                                    myProfile: false,
+                                    userProfileDetailsModel:
+                                        state.matchedUserProfiles![index]));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MyProfileScreen(
+                                        viewer: true,
+                                      ),
+                                    ));
+                              },
                               title: Row(
                                 children: [
                                   CircleAvatar(
@@ -199,7 +229,6 @@ class SearchScreenState extends State<SearchScreen> {
                   child: textValueWidget(state.errorMessage.toString() + "😐"),
                 );
               }
-
               return Container();
             },
           ),

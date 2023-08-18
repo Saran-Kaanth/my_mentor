@@ -10,29 +10,22 @@ class PostRepository {
   DatabaseReference dbRef = FirebaseDatabase.instance.ref("postDetails");
   final Reference storageRef = FirebaseStorage.instance.ref();
 
-  Future<List<Post>> retrieveMyPostDetail() async {
+  Future<List<Post>> retrieveMyPostDetail({String? userId}) async {
     List<Post> myPostsList = [];
     try {
-      await dbRef
-          .orderByChild("authorId")
-          .equalTo(currentUser.uid)
-          .once()
-          .then((value) {
+      // print(userId.toString() + " in function");
+      print(userId);
+      userId = userId == "" ? currentUser.uid : userId;
+      await dbRef.orderByChild("authorId").equalTo(userId).once().then((value) {
         if (value.snapshot.value == null) {
-          // print(myPostsList);
-          // print(myPostsList.runtimeType);
           return myPostsList;
         } else {
           Map myPosts = value.snapshot.value as Map;
-          // print(myPosts);
           myPosts.values.forEach((element) {
             myPostsList.add(Post.fromMap(element));
-            print(myPostsList);
+            // print(myPostsList);
           });
-          print("data is there" + myPostsList[0].authorId.toString());
-          myPostsList.forEach((element) {
-            print(element.authorId);
-          });
+          // print("data is there" + myPostsList[0].authorId.toString());
           return myPostsList;
         }
       });
@@ -101,6 +94,5 @@ class PostRepository {
     String authorImg =
         "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com%2Fid%2F1393750072%2Fvector%2Fflat-white-icon-man-for-web-design-silhouette-flat-illustration-vector-illustration-stock.jpg%3Fs%3D612x612%26w%3D0%26k%3D20%26c%3Ds9hO4SpyvrDIfELozPpiB_WtzQV9KhoMUP9R9gVohoU%3D&tbnid=Eck3-Z1-_NVGmM&vet=10CDsQMyiCAWoXChMI2PPIxvfOgAMVAAAAAB0AAAAAEAM..i&imgrefurl=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fblank-profile-picture&docid=rRWD3SDgbLRjnM&w=612&h=612&q=link%20for%20empty%20user%20profile%20image&safe=active&ved=0CDsQMyiCAWoXChMI2PPIxvfOgAMVAAAAAB0AAAAAEAM";
     return authorImg;
-
   }
 }

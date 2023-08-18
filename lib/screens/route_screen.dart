@@ -11,7 +11,8 @@ import 'package:my_mentor/screens/my_profile_screen.dart';
 import 'package:my_mentor/screens/search_screen.dart';
 
 class RouteScreen extends StatefulWidget {
-  const RouteScreen({Key? key}) : super(key: key);
+  final int selectedIndex;
+  const RouteScreen({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   State<RouteScreen> createState() => RouteScreenState();
@@ -20,12 +21,18 @@ class RouteScreen extends StatefulWidget {
 class RouteScreenState extends State<RouteScreen> {
   int _selectedIndex = 0;
 
-  List<Widget> widgetOptions = [
-    const HomeScreen(),
+  List<Widget> widgetOptions =const [
+    HomeScreen(),
     // ExampleScreen(),
     SearchScreen(),
     MyProfileScreen()
   ];
+
+  @override
+  void initState() {
+    _selectedIndex = widget.selectedIndex;
+    super.initState();
+  }
 
   void onItemTap(int index) {
     setState(() {
@@ -36,6 +43,8 @@ class RouteScreenState extends State<RouteScreen> {
   @override
   Widget build(BuildContext context) {
     // final postBloc = BlocProvider.of<PostBloc>(context);
+    // final postBloc = BlocProvider.of<PostBloc>(context);
+    // postBloc.add(AllPostRetrieveEvent());
     return Scaffold(
       // backgroundColor: Colors.grey.shade900,
       body: IndexedStack(
@@ -55,8 +64,6 @@ class RouteScreenState extends State<RouteScreen> {
     final postBloc = BlocProvider.of<PostBloc>(context);
     final searchBloc = BlocProvider.of<SearchBloc>(context);
     return Container(
-      // height: size.width / 4.5,
-      // color: Colors.blueGrey.shade800,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.deepOrangeAccent),
           borderRadius: BorderRadius.circular(10)),

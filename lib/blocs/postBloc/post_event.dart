@@ -2,7 +2,10 @@ part of 'post_bloc.dart';
 
 abstract class PostEvent {}
 
-class PostLoadingEvent extends PostEvent {}
+class PostLoadingEvent extends PostEvent {
+  String? userId;
+  PostLoadingEvent({this.userId=""});
+}
 
 class PostLoadedEvent extends PostEvent {}
 
@@ -13,4 +16,4 @@ class PostSubmittingEvent extends PostEvent {
   PostSubmittingEvent(this.photoUrl, this.postDescription);
 }
 
-class AllPostRetrieveEvent extends PostEvent{}
+class AllPostRetrieveEvent extends PostEvent {}

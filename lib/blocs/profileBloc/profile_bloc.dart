@@ -17,11 +17,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         emit(ProfileLoadingState());
         print("profileLoading success");
-        UserProfileDetailsModel userProfileDetailsModel =
-            await ProfileRepository().retrieveUserProfile();
-        emit(ProfileLoadedState(
-            userProfileDetailsModel: userProfileDetailsModel));
-        print("ProfileLoaded success");
+        if (event.myProfile) {
+          UserProfileDetailsModel userProfileDetailsModel =
+              await ProfileRepository().retrieveUserProfile();
+          emit(ProfileLoadedState(
+              userProfileDetailsModel: userProfileDetailsModel));
+        } else {
+          emit(ProfileLoadedState(
+              userProfileDetailsModel: event.userProfileDetailsModel));
+        }
       } catch (e) {
         emit(ProfileErrorState("Unable to fetch data"));
       }
@@ -32,7 +36,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileUpdatingState());
         await ProfileRepository()
             .updateUserProfile(event.userProfileDetailsModel);
-        emit(ProfileUpdatedState());
+        if (event.initial) {
+          emit(SetupInitialProfileState());
+        } else {
+          emit(ProfileUpdatedState());
+        }
       } catch (e) {
         emit(ProfileErrorState("Please Try Again"));
       }

@@ -9,12 +9,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
 import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
+import 'package:my_mentor/data/models/user.dart';
 // import 'package:my_mentor/data/repositories/auth_repository.dart';
 import 'package:my_mentor/screens/post_add_screen.dart';
 import 'package:my_mentor/screens/profile_details_screen.dart';
 
 class MyProfileScreen extends StatefulWidget {
-  const MyProfileScreen({Key? key}) : super(key: key);
+  // final UserProfileDetailsModel? userProfileDetailsModel;
+  final bool viewer;
+  const MyProfileScreen({Key? key, this.viewer = false}) : super(key: key);
   @override
   State<StatefulWidget> createState() => MyProfileScreenState();
 }
@@ -27,9 +30,11 @@ class MyProfileScreenState extends State<MyProfileScreen>
   final DatabaseReference dbRef =
       FirebaseDatabase.instance.ref("profileDetails");
   CroppedFile? imageFile;
+  late bool isViewer;
 
   @override
   void initState() {
+    isViewer = widget.viewer;
     super.initState();
   }
 
@@ -60,9 +65,10 @@ class MyProfileScreenState extends State<MyProfileScreen>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final bloc = BlocProvider.of<AuthBloc>(context);
-    final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    // final profileBloc = BlocProvider.of<ProfileBloc>(context);
     final postBloc = BlocProvider.of<PostBloc>(context);
-    TabController tabController = TabController(length: 3, vsync: this);
+    TabController tabController =
+        TabController(length: isViewer ? 2 : 3, vsync: this);
     // final TabController tabController = DefaultTabController.of(context);
 
     return Scaffold(
@@ -160,50 +166,52 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 0),
-                                        child: CupertinoButton(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Edit Profile",
-                                                  style:
-                                                      TextStyle(fontSize: 13),
-                                                ),
-                                                SizedBox(width: 5),
-                                                Icon(
-                                                  Icons.edit,
-                                                  size: 15,
-                                                )
-                                              ],
-                                            ),
-                                            onPressed: () async {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ProfileDetailsScreen(
-                                                            userProfileDetailsModel:
-                                                                state
-                                                                    .userProfileDetailsModel,
-                                                            first: false,
-                                                          )));
-                                              // await user
-                                              //     .updateDisplayName("Saran K");
-                                              // await dbRef
-                                              //     .orderByChild("displayName")
-                                              //     .equalTo("Saran ")
-                                              //     .get()
-                                              //     .then((value) =>
-                                              //         print(value.value))
-                                              //     .onError((error,
-                                              //             stackTrace) =>
-                                              //         print(error.toString()));
-                                            }),
-                                      )
+                                      isViewer
+                                          ? Container()
+                                          : Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 0),
+                                              child: CupertinoButton(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Edit Profile",
+                                                        style: TextStyle(
+                                                            fontSize: 13),
+                                                      ),
+                                                      SizedBox(width: 5),
+                                                      Icon(
+                                                        Icons.edit,
+                                                        size: 15,
+                                                      )
+                                                    ],
+                                                  ),
+                                                  onPressed: () async {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProfileDetailsScreen(
+                                                                  userProfileDetailsModel:
+                                                                      state
+                                                                          .userProfileDetailsModel,
+                                                                  first: false,
+                                                                )));
+                                                    // await user
+                                                    //     .updateDisplayName("Saran K");
+                                                    // await dbRef
+                                                    //     .orderByChild("displayName")
+                                                    //     .equalTo("Saran ")
+                                                    //     .get()
+                                                    //     .then((value) =>
+                                                    //         print(value.value))
+                                                    //     .onError((error,
+                                                    //             stackTrace) =>
+                                                    //         print(error.toString()));
+                                                  }),
+                                            )
                                     ],
                                   ),
                                 ),
@@ -292,36 +300,63 @@ class MyProfileScreenState extends State<MyProfileScreen>
                       ),
                       TabBar(
                           // isScrollable: true,
+                          onTap: (value) {
+                            print(value);
+                            if (isViewer) {
+                              print(state.userProfileDetailsModel!.userId);
+                              if (value == 1) {
+                                postBloc.add(PostLoadingEvent(
+                                    userId:
+                                        state.userProfileDetailsModel!.userId));
+                              }
+                            }
+                          },
                           labelStyle: GoogleFonts.mavenPro(),
                           labelColor: Colors.white,
                           unselectedLabelColor: Colors.grey,
                           indicatorColor: Colors.deepOrangeAccent[100],
                           controller: tabController,
-                          tabs: [
-                            Tab(
-                              text: "Info",
-                              icon: Icon(Icons.info),
-                            ),
-                            Tab(
-                              text: "Posts",
-                              icon: Icon(Icons.image),
-                            ),
-                            Tab(
-                              text: "Settings",
-                              icon: Icon(Icons.settings),
-                            )
-                          ]),
+                          tabs: isViewer
+                              ? [
+                                  Tab(
+                                    text: "Info",
+                                    icon: Icon(Icons.info),
+                                  ),
+                                  Tab(
+                                    text: "Posts",
+                                    icon: Icon(Icons.image),
+                                  ),
+                                ]
+                              : [
+                                  Tab(
+                                    text: "Info",
+                                    icon: Icon(Icons.info),
+                                  ),
+                                  Tab(
+                                    text: "Posts",
+                                    icon: Icon(Icons.image),
+                                  ),
+                                  Tab(
+                                    text: "Settings",
+                                    icon: Icon(Icons.settings),
+                                  )
+                                ]),
                       SizedBox(
                         height: 10,
                       ),
                       Expanded(
                           child: TabBarView(
                         controller: tabController,
-                        children: [
-                          profileWidget(size),
-                          postWidget(size),
-                          settingsWidget(size, bloc)
-                        ],
+                        children: isViewer
+                            ? [
+                                profileWidget(size),
+                                postWidget(size),
+                              ]
+                            : [
+                                profileWidget(size),
+                                postWidget(size),
+                                settingsWidget(size, bloc)
+                              ],
                       ))
                     ],
                   );
@@ -487,8 +522,6 @@ class MyProfileScreenState extends State<MyProfileScreen>
                             print(state.myPostsList![index]!.authorId);
                             return InkWell(
                               onTap: () {
-                                print(
-                                    state.myPostsList![index]!.postDescription);
                                 fullImage(
                                     state.myPostsList![index]!.postUrl!,
                                     state.myPostsList![index]!.postDescription!,
@@ -510,23 +543,25 @@ class MyProfileScreenState extends State<MyProfileScreen>
                   return Container();
                 },
               ),
-              Positioned(
-                child: FloatingActionButton(
-                  onPressed: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PostAddScreen(),
-                        ));
-                  },
-                  child: Container(
-                    child: Icon(
-                      Icons.add,
-                      size: 50,
-                    ),
-                  ),
-                ),
-              )
+              isViewer
+                  ? Container()
+                  : Positioned(
+                      child: FloatingActionButton(
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PostAddScreen(),
+                              ));
+                        },
+                        child: Container(
+                          child: Icon(
+                            Icons.add,
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                    )
             ],
           ),
         ),

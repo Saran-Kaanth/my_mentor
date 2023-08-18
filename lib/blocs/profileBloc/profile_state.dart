@@ -15,6 +15,8 @@ class ProfileUpdatingState extends ProfileState{}
 
 class ProfileUpdatedState extends ProfileState {}
 
+class SetupInitialProfileState extends ProfileState{}
+
 class ProfileErrorState extends ProfileState {
   String errorMessage;
   ProfileErrorState(this.errorMessage);

@@ -204,7 +204,7 @@ class PostAddScreenState extends State<PostAddScreen> {
                     } else if (state is PostImageUploadingState) {
                       return Center(
                         child: Text(
-                          "Image Uploading...",
+                          "Post Uploading...",
                           style: TextStyle(color: Colors.white, fontSize: 25),
                         ),
                       );

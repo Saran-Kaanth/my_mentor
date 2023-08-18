@@ -456,9 +456,12 @@ class ProfileDetailsScreen extends StatelessWidget {
                     ),
                     BlocConsumer<ProfileBloc, ProfileState>(
                       listener: (context, state) {
-                        if (state is ProfileUpdatedState) {
+                        if (state is SetupInitialProfileState) {
                           Navigator.pushNamedAndRemoveUntil(
                               context, "route", (route) => false);
+                        } else if (state is ProfileUpdatedState) {
+                          profileBloc.add(ProfileLoadEvent());
+                          Navigator.pop(context);
                         }
                       },
                       builder: (context, state) {
@@ -510,7 +513,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                                   //     formController.controller("city").text;
 
                                   profileBloc.add(ProfileUpdateEvent(
-                                      userProfileDetailsModel!));
+                                      userProfileDetailsModel!, first));
                                 })
                           ],
                         );
@@ -536,8 +539,6 @@ bool toBoolean(String value) {
 }
 
 List skillsToList(String value) {
-  print(value);
-  print(value.split(","));
   return value.split(",");
 }
 

@@ -71,7 +71,7 @@ class AuthService {
         if (snapshot.hasData) {
           final postBloc = BlocProvider.of<PostBloc>(context);
           postBloc.add(AllPostRetrieveEvent());
-          return const RouteScreen();
+          return const RouteScreen(selectedIndex: 0,);
         } else {
           return LoginScreen();
         }

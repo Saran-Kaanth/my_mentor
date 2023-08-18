@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
               "signup": (context) => SignUpScreen(),
               "home": (context) => const HomeScreen(),
               "splash": (context) => const SplashScreen(),
-              "route": (context) => const RouteScreen(),
+              "route": (context) => const RouteScreen(selectedIndex: 0,),
               // "profiledetails": (context) => ProfileDetailsScreen(),
               // "academicDetails": (context) => AcademicDetailsScreen(),
             },
