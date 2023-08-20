@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 import 'package:my_mentor/blocs/profileBloc/profile_bloc.dart';
 import 'package:my_mentor/blocs/searchBloc/search_bloc.dart';
 import 'package:my_mentor/data/models/user.dart';
@@ -28,6 +29,7 @@ class SearchScreenState extends State<SearchScreen> {
     Size size = MediaQuery.of(context).size;
     final searchBloc = BlocProvider.of<SearchBloc>(context);
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    final postBloc = BlocProvider.of<PostBloc>(context);
     return Scaffold(
         body: SafeArea(
       child: Column(
@@ -87,7 +89,7 @@ class SearchScreenState extends State<SearchScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
-                            "“If you cannot see where you are going, ask someone who has been there before.” J Loren Norris",
+                            "“If you cannot see where you are going, ask someone who has been there before.”",
                             softWrap: true,
                             maxLines: null,
                             style:
@@ -119,10 +121,6 @@ class SearchScreenState extends State<SearchScreen> {
                             itemBuilder: (context, index) {
                               return ListTile(
                                 onTap: () {
-                                  profileBloc.add(ProfileLoadEvent(
-                                      myProfile: false,
-                                      userProfileDetailsModel:
-                                          state.locBasedUsersProfiles![index]));
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -131,15 +129,29 @@ class SearchScreenState extends State<SearchScreen> {
                                           viewer: true,
                                         ),
                                       ));
+                                  profileBloc.add(ProfileLoadEvent(
+                                      myProfile: false,
+                                      userProfileDetailsModel:
+                                          state.locBasedUsersProfiles![index]));
+                                  postBloc.add(PostLoadingEvent(
+                                      userId: state
+                                          .locBasedUsersProfiles![index]
+                                          .userId));
                                 },
                                 title: Row(
                                   children: [
-                                    CircleAvatar(
-                                      backgroundImage: NetworkImage(state
-                                          .locBasedUsersProfiles![index]
-                                          .photoUrl
-                                          .toString()),
-                                    ),
+                                    state.locBasedUsersProfiles![index]
+                                                .photoUrl ==
+                                            null
+                                        ? CircleAvatar(
+                                            child: Icon(Icons.person),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundImage: NetworkImage(state
+                                                .locBasedUsersProfiles![index]
+                                                .photoUrl
+                                                .toString()),
+                                          ),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -195,6 +207,9 @@ class SearchScreenState extends State<SearchScreen> {
                                     myProfile: false,
                                     userProfileDetailsModel:
                                         state.matchedUserProfiles![index]));
+                                postBloc.add(PostLoadingEvent(
+                                    userId: state
+                                        .matchedUserProfiles![index].userId));
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -206,11 +221,17 @@ class SearchScreenState extends State<SearchScreen> {
                               },
                               title: Row(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundImage: NetworkImage(state
-                                        .matchedUserProfiles![index].photoUrl
-                                        .toString()),
-                                  ),
+                                  state.matchedUserProfiles![index].photoUrl ==
+                                          null
+                                      ? CircleAvatar(
+                                          child: Icon(Icons.person),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage: NetworkImage(state
+                                              .matchedUserProfiles![index]
+                                              .photoUrl
+                                              .toString()),
+                                        ),
                                   SizedBox(
                                     width: 10,
                                   ),

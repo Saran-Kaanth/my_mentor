@@ -143,13 +143,16 @@ class ProfileDetailsScreen extends StatelessWidget {
                       ),
                     )),
                 Stack(alignment: Alignment(2.5, 4.6), children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: userProfileDetailsModel!.photoUrl == null
-                        ? null
-                        : NetworkImage(
-                            userProfileDetailsModel!.photoUrl.toString()),
-                  ),
+                  userProfileDetailsModel!.photoUrl == null
+                      ? CircleAvatar(
+                          radius: 30,
+                          child: Icon(Icons.person),
+                        )
+                      : CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(
+                              userProfileDetailsModel!.photoUrl.toString()),
+                        ),
                   IconButton(
                       onPressed: () async {
                         counter++;
@@ -201,8 +204,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                       onChanged: (value) {
                         userProfileDetailsModel!.displayName = value.toString();
                       },
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.displayName = newValue,
+                      onSaved: (newValue) => userProfileDetailsModel!
+                          .displayName = newValue!.trimRight(),
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Your display name";
@@ -221,8 +224,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                       controller: formController.controller("fullName"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.fullName = value,
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.fullName = newValue,
+                      onSaved: (newValue) => userProfileDetailsModel!.fullName =
+                          newValue!.trimRight(),
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Your Full Name";
@@ -263,8 +266,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                     TextFormField(
                       // style: TextStyle(color: Colors.white),
                       controller: formController.controller("occupation"),
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.occupation = newValue,
+                      onSaved: (newValue) => userProfileDetailsModel!
+                          .occupation = newValue!.trimRight(),
                       onChanged: (value) =>
                           userProfileDetailsModel!.occupation = value,
                       validator: (value) {
@@ -291,8 +294,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                       controller: formController.controller("headline"),
                       onChanged: (value) =>
                           userProfileDetailsModel!.headline = value,
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.headline = newValue,
+                      onSaved: (newValue) => userProfileDetailsModel!.headline =
+                          newValue!.trimRight(),
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Give short info of u..";
@@ -303,13 +306,23 @@ class ProfileDetailsScreen extends StatelessWidget {
                           labelText: "About Yourself",
                           prefixIcon: Icon(Icons.info_outline)),
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     TextFormField(
                       // style: TextStyle(color: Colors.white),
                       controller: formController.controller("city"),
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.city = newValue,
-                      onChanged: (value) =>
-                          userProfileDetailsModel!.city = value,
+                      onSaved: (newValue) => userProfileDetailsModel!.city =
+                          newValue![0].toUpperCase() +
+                              newValue.substring(1).trimRight(),
+                      onChanged: (value) {
+                        if (value.length > 1) {
+                          userProfileDetailsModel!.city =
+                              value[0].toUpperCase() +
+                                  value.substring(1).trimRight();
+                        }
+                      },
+
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Your City";
@@ -326,10 +339,16 @@ class ProfileDetailsScreen extends StatelessWidget {
                     TextFormField(
                       // style: TextStyle(color: Colors.white),
                       controller: formController.controller("state"),
-                      onChanged: (value) =>
-                          userProfileDetailsModel!.state = value,
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.state = newValue,
+                      onSaved: (newValue) => userProfileDetailsModel!.state =
+                          newValue![0].toUpperCase() +
+                              newValue.substring(1).trimRight(),
+                      onChanged: (value) {
+                        if (value.length > 1) {
+                          userProfileDetailsModel!.state =
+                              value[0].toUpperCase() +
+                                  value.substring(1).trimRight();
+                        }
+                      },
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Your State";
@@ -343,40 +362,19 @@ class ProfileDetailsScreen extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    // SelectState(
-                    //     dropdownColor: Colors.grey.shade300,
-                    //    // style: TextStyle(color: Colors.white),
-                    //     onCountryChanged: (value) {
-                    //       print(value);
-                    //     },
-                    //     onStateChanged: (value) {
-                    //       print(value);
-                    //     },
-                    //     onCityChanged: (value) {
-                    //       print(value);
-                    //     }),
-                    // CountryStateCityPicker(
-                    //   country: formController.controller("country"),
-                    //   // state: formController.controller("state"),
-                    //   // city: formController.controller("city"),
-                    //   // country: country,
-                    //   state: state,
-                    //   city: city,
-                    //   textFieldDecoration: InputDecoration(
-                    //     icon: Icon(Icons.location_on_outlined),
-                    //   ),
-                    //   dialogColor: Colors.grey.shade500,
-                    // ),
-                    SizedBox(
-                      height: 5,
-                    ),
                     TextFormField(
                       // style: TextStyle(color: Colors.white),
                       controller: formController.controller("country"),
-                      onChanged: (value) =>
-                          userProfileDetailsModel!.country = value,
-                      onSaved: (newValue) =>
-                          userProfileDetailsModel!.country = newValue,
+                      onSaved: (newValue) => userProfileDetailsModel!.country =
+                          newValue![0].toUpperCase() +
+                              newValue.substring(1).trimRight(),
+                      onChanged: (value) {
+                        if (value.length > 1) {
+                          userProfileDetailsModel!.country =
+                              value[0].toUpperCase() +
+                                  value.substring(1).trimRight();
+                        }
+                      },
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Your Country";
@@ -391,6 +389,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       height: 5,
                     ),
                     TextFormField(
+                      maxLength: 10,
                       keyboardType: TextInputType.number,
                       // style: TextStyle(color: Colors.white),
                       controller: formController.controller("phone"),
@@ -401,6 +400,8 @@ class ProfileDetailsScreen extends StatelessWidget {
                       validator: (value) {
                         if (value != null && value.isEmpty) {
                           return "Your Mobile No.";
+                        } else if (value!.length > 10) {
+                          return "10 digits only..";
                         }
                         return null;
                       },

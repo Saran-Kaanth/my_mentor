@@ -54,6 +54,8 @@ dependencies:
   image_cropper: ^5.0.0
   country_state_city_picker: ^1.2.8
   country_state_city_pro: ^0.0.5
+  animated_text_kit: ^4.2.2
+  simple_gradient_text: 1.2.4
   # path_provider:  
   # image_gallery_saver: 
 

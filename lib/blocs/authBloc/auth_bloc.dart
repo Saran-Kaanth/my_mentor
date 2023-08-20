@@ -24,7 +24,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           // emit(AuthLoadedState());
           emit(AuthLoggedInState(userProfileDetailsModel: initialData));
         } catch (e) {
-          emit(AuthErrorState(e.toString().substring(11)));
+          // emit(AuthErrorState(e.toString().substring(11)));
+          emit(AuthErrorState("Give Valid Credentials!"));
         }
       } else {
         emit(AuthErrorState("Provide the credentials!"));
@@ -42,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                   password: event.credentialModel.password);
           emit(AuthLoggedInState(userProfileDetailsModel: initialData));
         } catch (e) {
-          emit(AuthErrorState(e.toString().substring(11)));
+          emit(AuthErrorState("Give valid credentials!"));
         }
       } else {
         emit(AuthErrorState("Provide the credentials!"));
@@ -53,10 +54,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         emit(AuthLoadingState());
         await authRepository.signOut();
+        print("logged out");
         // emit(AuthLoadedState());
         emit(AuthLoggedOutState());
       } catch (e) {
-        emit(AuthErrorState(e.toString()));
+        emit(AuthErrorState("Unable to Log out!"));
       }
     });
 
@@ -69,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             newPassword: event.newPassword);
         emit(AuthPasswordUpdatedSuccessState());
       } catch (e) {
-        emit(AuthErrorState(e.toString()));
+        emit(AuthErrorState("Please Try Again!"));
       }
     });
 
@@ -84,7 +86,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         print("Authentication Google Error");
         print(e.toString());
-        emit(AuthErrorState(e.toString()));
+        emit(AuthErrorState("Please Try Again!"));
       }
     });
 

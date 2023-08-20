@@ -19,7 +19,6 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<PostLoadingEvent>((event, emit) async {
       try {
         emit(PostLoadingState());
-        // print(event.userId);
         var postList =
             await postRepository.retrieveMyPostDetail(userId: event.userId);
         emit(PostLoadedState(myPostsList: postList));

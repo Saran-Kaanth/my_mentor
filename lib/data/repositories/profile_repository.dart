@@ -25,12 +25,14 @@ class ProfileRepository {
   Future<UserProfileDetailsModel> retrieveUserProfile() async {
     UserProfileDetailsModel? profileData;
     try {
+      print("initial data started");
       await dbRef.child(currentUser!.uid).once().then((value) {
         Map allData = value.snapshot.value as Map;
 
         allData.forEach((key, value) {
           profileData = UserProfileDetailsModel.fromMap(allData);
         });
+        print(profileData!.city);
         return profileData;
       });
     } catch (e) {
@@ -43,7 +45,7 @@ class ProfileRepository {
       String city) async {
     List<UserProfileDetailsModel> locBasedUsersList = [];
     try {
-      await dbRef.orderByChild("city").startAt(city).once().then((value) {
+      await dbRef.orderByChild("city").equalTo(city).once().then((value) {
         // print(value.snapshot.value);
         if (value.snapshot.value == null) {
           return locBasedUsersList;

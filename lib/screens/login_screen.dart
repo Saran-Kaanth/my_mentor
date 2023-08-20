@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_mentor/blocs/authBloc/auth_bloc.dart';
+import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 // import 'package:my_mentor/blocs/postBloc/post_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -108,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.account_circle_rounded),
                             contentPadding: EdgeInsets.only(bottom: 2, left: 5),
-                            hintText: "Username",
+                            hintText: "Email",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(

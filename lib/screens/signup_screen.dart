@@ -37,7 +37,8 @@ class SignUpScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => ProfileDetailsScreen(
                             userProfileDetailsModel:
-                                state.userProfileDetailsModel,first: true,
+                                state.userProfileDetailsModel,
+                            first: true,
                           ),
                         ),
                         (route) => false);
@@ -79,7 +80,7 @@ class SignUpScreen extends StatelessWidget {
                               prefixIcon: Icon(Icons.account_circle_rounded),
                               contentPadding:
                                   EdgeInsets.only(bottom: 2, left: 5),
-                              hintText: "Username",
+                              hintText: "Email",
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(

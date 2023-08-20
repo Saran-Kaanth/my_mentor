@@ -57,7 +57,7 @@ class UserProfileDetailsModel {
 
   Map<String, dynamic> toMap() {
     return {
-      "userid": userId,
+      "userId": userId,
       "email": email,
       "displayName": displayName,
       "fullName": fullName,

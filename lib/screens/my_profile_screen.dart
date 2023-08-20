@@ -142,14 +142,23 @@ class MyProfileScreenState extends State<MyProfileScreen>
                                                 // maxRadius: 38,
                                                 backgroundColor:
                                                     Colors.deepOrangeAccent,
-                                                child: CircleAvatar(
-                                                  radius: 38,
-                                                  backgroundImage: NetworkImage(
-                                                      state
-                                                          .userProfileDetailsModel!
-                                                          .photoUrl
-                                                          .toString()),
-                                                )),
+                                                child:
+                                                    state.userProfileDetailsModel!
+                                                                .photoUrl ==
+                                                            null
+                                                        ? CircleAvatar(
+                                                            radius: 38,
+                                                            child: Icon(
+                                                                Icons.person),
+                                                          )
+                                                        : CircleAvatar(
+                                                            radius: 38,
+                                                            backgroundImage:
+                                                                NetworkImage(state
+                                                                    .userProfileDetailsModel!
+                                                                    .photoUrl
+                                                                    .toString()),
+                                                          )),
                                           ),
                                           (state.userProfileDetailsModel!
                                                       .isMentor ==
@@ -585,33 +594,45 @@ class MyProfileScreenState extends State<MyProfileScreen>
         ),
         child: Column(
           children: [
-            InkWell(
-              onTap: () async {
-                bloc.add(AuthSignOutEvent());
+            BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state is AuthLoggedOutState) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "login", (route) => false);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Logged out Successfully!"),
+                    backgroundColor: Colors.blue,
+                  ));
+                }
               },
-              splashColor: Colors.red,
-              child: Container(
-                width: size.width,
-                height: 50,
-                // color: Colors.grey.shade700,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(9),
-                    border: Border.all(color: Colors.deepOrangeAccent)),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.logout_rounded,
-                        size: 30,
-                        color: Colors.blue,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      textValueWidget("Logout", fontSize: 25)
-                    ],
+              child: InkWell(
+                onTap: () async {
+                  bloc.add(AuthSignOutEvent());
+                },
+                splashColor: Colors.red,
+                child: Container(
+                  width: size.width,
+                  height: 50,
+                  // color: Colors.grey.shade700,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9),
+                      border: Border.all(color: Colors.deepOrangeAccent)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.logout_rounded,
+                          size: 30,
+                          color: Colors.blue,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        textValueWidget("Logout", fontSize: 25)
+                      ],
+                    ),
                   ),
                 ),
               ),
